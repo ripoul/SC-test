@@ -8,3 +8,7 @@ class LocationValidationForm(forms.Form):
     id = forms.IntegerField()
     name = forms.CharField()
     capacity = forms.IntegerField()
+
+class LocationAddValidationForm(forms.Form):
+    name = forms.CharField()
+    capacity = forms.IntegerField()
