@@ -1,0 +1,67 @@
+{% extends "booking/base.html" %}
+{% load static %}
+{% block title %} admin {% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block content %}
+<h1>Locations</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">capacity</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for location in locations %}
+        <tr>
+            <th scope="row">{{ location.id }}</th>
+            <td>{{ location.name }}</td>
+            <td>{{ location.capacity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1>Resource Types</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for resourceType in resourceTypes %}
+        <tr>
+            <th scope="row">{{ resourceType.id }}</th>
+            <td>{{ resourceType.name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1>Resources</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Resource type</th>
+            <th scope="col">word</th>
+            <th scope="col">location</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for resource in resources %}
+        <tr>
+            <th scope="row">{{ resource.id }}</th>
+            <td>{{ resource.resource_type.name }}</td>
+            <td>{{ resource.word }}</td>
+            <td>{{ resource.location.name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
