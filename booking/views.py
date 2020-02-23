@@ -14,6 +14,7 @@ from booking.forms import (
     RtValidationForm,
     RtAddValidationForm,
     ResourceValidationForm,
+    ResourceAddValidationForm,
 )
 from booking.models import Location, Reservation, Resource, ResourceType
 
@@ -185,4 +186,33 @@ def resource_edit(request):
     resource.location = location
     resource.ResourceType = rt
     resource.save()
+    return redirect(reverse("admin_view"))
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url="/booking/login")
+def resource_add_view(request):
+    resourceTypes = ResourceType.objects.all()
+    locations = Location.objects.all()
+    context = {
+        "resourceTypes": resourceTypes,
+        "locations": locations,
+    }
+    return render(request, "booking/resource_add.html", context)
+
+
+@require_POST
+@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url="/booking/login")
+def resource_add(request):
+    form = ResourceAddValidationForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return HttpResponse(status=400)
+    word = request.POST["word"]
+    location_id = request.POST["location"]
+    rt_id = request.POST["rt"]
+    rt = ResourceType.objects.get(id=rt_id)
+    location = Location.objects.get(id=location_id)
+
+    Resource.objects.create(word=word, resource_type=rt, location=location)
     return redirect(reverse("admin_view"))

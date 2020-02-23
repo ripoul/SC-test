@@ -31,3 +31,9 @@ class ResourceValidationForm(forms.Form):
     word = forms.CharField()
     location = forms.IntegerField()
     rt = forms.IntegerField()
+
+
+class ResourceAddValidationForm(forms.Form):
+    word = forms.CharField()
+    location = forms.IntegerField()
+    rt = forms.IntegerField()

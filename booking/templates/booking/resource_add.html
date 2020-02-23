@@ -1,0 +1,45 @@
+{% extends "booking/base.html" %}
+{% load static %}
+{% block title %} Add Resource {% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block content %}
+<article class="card-body mx-auto" style="max-width: 400px;">
+    <h4 class="card-title mt-3 text-center">Add Resource</h4>
+    <form id="form" method="POST" action="{% url 'resource_add' %}">
+        {% csrf_token %}
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fas fa-font"></i> </span>
+            </div>
+            <input name="word" class="form-control" placeholder="word" type="text" value="" required>
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fas fa-map-marker-alt"></i> </span>
+            </div>
+            <select name="location" class="form-control">
+                {% for location in locations %}
+                <option value="{{ location.id }}">
+                    {{ location.name }}</option>
+                {% endfor %}
+            </select>
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fas fa-keyboard"></i> </span>
+            </div>
+            <select name="rt" class="form-control">
+                {% for rt in resourceTypes %}
+                <option value="{{ rt.id }}">
+                    {{ rt.name }}</option>
+                {% endfor %}
+            </select>
+        </div> <!-- form-group// -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Done </button>
+        </div> <!-- form-group// -->
+    </form>
+</article>
+{% endblock %}
