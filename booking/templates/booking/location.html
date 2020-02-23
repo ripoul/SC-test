@@ -1,0 +1,31 @@
+{% extends "booking/base.html" %}
+{% load static %}
+{% block title %} Login {% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block content %}
+<article class="card-body mx-auto" style="max-width: 400px;">
+    <h4 class="card-title mt-3 text-center">Modifie location</h4>
+    <form id="form" method="POST" action="{% url 'location_edit' %}">
+        <input id="id" name="id" class="form-control" type="text" value="{{ location.id }}" required hidden readonly>
+        {% csrf_token %}
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fas fa-map-marker-alt"></i> </span>
+            </div>
+            <input name="name" class="form-control" placeholder="name" type="text" value="{{ location.name }}" required>
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <i class="fas fa-sort-numeric-up-alt"></i> </span>
+            </div>
+            <input name="capacity" class="form-control" placeholder="capacity" type="text"
+                value="{{ location.capacity }}" required>
+        </div> <!-- form-group// -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Done </button>
+        </div> <!-- form-group// -->
+    </form>
+</article>
+{% endblock %}

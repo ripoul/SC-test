@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 
-from booking.forms import AuthValidationForm
+from booking.forms import AuthValidationForm, LocationValidationForm
 from booking.models import Location, Reservation, Resource, ResourceType
 
 @login_required(login_url="/booking/login")
@@ -52,3 +52,29 @@ def admin_view(request):
         "locations":locations
     }
     return render(request, 'booking/admin.html', context)
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url="/booking/login")
+def location_view(request, id_loc):
+    location = Location.objects.get(id=id_loc)
+    context = {
+        "location":location
+    }
+    return render(request, 'booking/location.html', context)
+
+@require_POST
+@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url="/booking/login")
+def location_edit(request):
+    form = LocationValidationForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return HttpResponse(status=400)
+    id_loc = request.POST['id']
+    name = request.POST['name']
+    capacity = request.POST['capacity']
+
+    location = Location.objects.get(id=id_loc)
+    location.name = name
+    location.capacity = capacity
+    location.save()
+    return redirect(reverse('admin_view'))
