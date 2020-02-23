@@ -33,6 +33,7 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
+            <th scope="col"><a href="{% url 'rt_add_view' %}">Add new one</a></th>
         </tr>
     </thead>
     <tbody>
@@ -40,6 +41,7 @@
         <tr>
             <th scope="row">{{ resourceType.id }}</th>
             <td>{{ resourceType.name }}</td>
+            <td><a href="{% url 'rt_view' resourceType.id %}">Modifie</a></td>
         </tr>
         {% endfor %}
     </tbody>

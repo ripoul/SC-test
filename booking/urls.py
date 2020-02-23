@@ -9,6 +9,10 @@ urlpatterns = [
     path('location/edit/', views.location_edit, name="location_edit"),
     path('location/view/add', views.location_add_view, name="location_add_view"),
     path('location/add/', views.location_add, name="location_add"),
+    path('rt/view/<int:id_rt>', views.rt_view, name="rt_view"),
+    path('rt/edit/', views.rt_edit, name="rt_edit"),
+    path('rt/view/add', views.rt_add_view, name="rt_add_view"),
+    path('rt/add/', views.rt_add, name="rt_add"),
     path('auth/', views.auth, name='auth'),
     path('', views.index, name='index'),
 ]

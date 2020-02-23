@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 
-from booking.forms import AuthValidationForm, LocationValidationForm, LocationAddValidationForm
+from booking.forms import AuthValidationForm, LocationValidationForm, LocationAddValidationForm, RtValidationForm, RtAddValidationForm
 from booking.models import Location, Reservation, Resource, ResourceType
 
 @login_required(login_url="/booking/login")
@@ -95,3 +95,44 @@ def location_add(request):
 @login_required(login_url="/booking/login")
 def location_add_view(request):
     return render(request, 'booking/location_add.html')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url="/booking/login")
+def rt_view(request, id_rt):
+    rt = ResourceType.objects.get(id=id_rt)
+    context = {
+        "ResourceType":rt
+    }
+    return render(request, 'booking/rt_edit.html', context)
+
+
+@require_POST
+@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url="/booking/login")
+def rt_edit(request):
+    form = RtValidationForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return HttpResponse(status=400)
+    id_rt = request.POST['id']
+    name = request.POST['name']
+    rt = ResourceType.objects.get(id=id_rt)
+    rt.name = name
+    rt.save()
+    return redirect(reverse('admin_view'))
+
+@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url="/booking/login")
+def rt_add_view(request):
+    return render(request, 'booking/rt_add.html')
+
+@require_POST
+@user_passes_test(lambda u: u.is_superuser)
+@login_required(login_url="/booking/login")
+def rt_add(request):
+    form = RtAddValidationForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return HttpResponse(status=400)
+    name = request.POST['name']
+    ResourceType.objects.create(name=name)
+    return redirect(reverse('admin_view'))
