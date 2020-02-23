@@ -19,3 +19,9 @@ class RtValidationForm(forms.Form):
 
 class RtAddValidationForm(forms.Form):
     name = forms.CharField()
+
+class ResourceValidationForm(forms.Form):
+    id = forms.IntegerField()
+    word = forms.CharField()
+    location = forms.IntegerField()
+    rt = forms.IntegerField()

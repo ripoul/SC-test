@@ -64,6 +64,7 @@
             <td>{{ resource.resource_type.name }}</td>
             <td>{{ resource.word }}</td>
             <td>{{ resource.location.name }}</td>
+            <td><a href="{% url 'resource_view' resource.id %}">Modifie</a></td>
         </tr>
         {% endfor %}
     </tbody>
