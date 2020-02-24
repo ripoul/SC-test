@@ -8,22 +8,23 @@ class Command(BaseCommand):
     help = "Create some data for testing"
 
     def handle(self, *args, **options):
-        rt1 = models.ResourceType.objects.create(name="ressource type 1")
-        rt2 = models.ResourceType.objects.create(name="ressource type 2")
+        rt1 = models.ResourceType.objects.create(name="écran")
+        rt2 = models.ResourceType.objects.create(name="capteur")
+        rt3 = models.ResourceType.objects.create(name="pad")
 
-        loc1 = models.Location.objects.create(name="cuisine", capacity=32)
+        loc1 = models.Location.objects.create(name="salle de réunion 300", capacity=32)
 
         rs1 = models.Resource.objects.create(
-            resource_type=rt1, word="ma resource 1", location=loc1
+            resource_type=rt2, word="capteur de présence ref 5478", location=loc1
         )
 
         rs2 = models.Resource.objects.create(
-            resource_type=rt2, word="ma resource 2", location=loc1
+            resource_type=rt3, word="pad ref 1058", location=loc1
         )
 
         user1 = User.objects.create_user("user", "user@example.com", "user")
         admin1 = User.objects.create_superuser(
-            username="admin", email="admin@example.com", passdatetimeword="admin"
+            username="admin", email="admin@example.com", password="admin"
         )
 
         models.Reservation.objects.create(
