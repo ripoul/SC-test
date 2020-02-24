@@ -32,4 +32,22 @@ $(document).ready(function () {
             }
         });
     });
+    $('#form_add_resource').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            url: e.target.action,
+            data: $(this).serialize(),
+            type: e.target.method,
+            success: function (data) {
+                $('#modal_add_resource').modal('hide');
+                data = JSON.parse(data)
+                id = data[0].pk
+                rt = data[0].fields.resource_type
+                word = data[0].fields.word
+                location_name = data[0].fields.location
+                newLigne = `<tr><th scope=\"row\">${id}</th><td>${rt}</td><td>${word}</td><td>${location_name}</td><td><a href=\"/booking/resource/view/${id}\">Modifie</a></td></tr>`
+                $('#table_resource > tbody:last-child').append(newLigne);
+            }
+        });
+    });
 });

@@ -178,18 +178,6 @@ def resource_edit(request):
     return redirect(reverse("admin_view"))
 
 
-@user_passes_test(lambda u: u.is_superuser)
-@login_required(login_url="/booking/login")
-def resource_add_view(request):
-    resourceTypes = ResourceType.objects.all()
-    locations = Location.objects.all()
-    context = {
-        "resourceTypes": resourceTypes,
-        "locations": locations,
-    }
-    return render(request, "booking/resource_add.html", context)
-
-
 @require_POST
 @user_passes_test(lambda u: u.is_superuser)
 @login_required(login_url="/booking/login")
@@ -203,5 +191,5 @@ def resource_add(request):
     rt = ResourceType.objects.get(id=rt_id)
     location = Location.objects.get(id=location_id)
 
-    Resource.objects.create(word=word, resource_type=rt, location=location)
-    return redirect(reverse("admin_view"))
+    resource = Resource.objects.create(word=word, resource_type=rt, location=location)
+    return JsonResponse(serializers.serialize("json", [resource,], use_natural_foreign_keys=True), safe=False)

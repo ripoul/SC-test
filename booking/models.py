@@ -5,10 +5,16 @@ from django.contrib.auth.models import User
 class ResourceType(models.Model):
     name = models.CharField(max_length=200)
 
+    def natural_key(self):
+        return (self.name)
+
 
 class Location(models.Model):
     name = models.CharField(max_length=200)
     capacity = models.IntegerField()
+    
+    def natural_key(self):
+        return (self.name,)
 
 
 class Resource(models.Model):

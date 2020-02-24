@@ -13,7 +13,6 @@ urlpatterns = [
     path("rt/add/", views.rt_add, name="rt_add"),
     path("resource/view/<int:id_resource>", views.resource_view, name="resource_view"),
     path("resource/edit/", views.resource_edit, name="resource_edit"),
-    path("resource/view/add", views.resource_add_view, name="resource_add_view"),
     path("resource/add/", views.resource_add, name="resource_add"),
     path("auth/", views.auth, name="auth"),
     path("", views.index, name="index"),
