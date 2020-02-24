@@ -103,14 +103,8 @@ def location_add(request):
         return HttpResponse(status=400)
     name = request.POST["name"]
     capacity = request.POST["capacity"]
-    Location.objects.create(name=name, capacity=capacity)
-    return redirect(reverse("admin_view"))
-
-
-@user_passes_test(lambda u: u.is_superuser)
-@login_required(login_url="/booking/login")
-def location_add_view(request):
-    return render(request, "booking/location_add.html")
+    loc = Location.objects.create(name=name, capacity=capacity)
+    return JsonResponse(serializers.serialize("json", [loc,]), safe=False)
 
 
 @user_passes_test(lambda u: u.is_superuser)
