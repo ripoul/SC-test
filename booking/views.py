@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods, require_POST
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
+from django.core import serializers
 
 from booking.forms import (
     AuthValidationForm,
@@ -135,12 +136,6 @@ def rt_edit(request):
     return redirect(reverse("admin_view"))
 
 
-@user_passes_test(lambda u: u.is_superuser)
-@login_required(login_url="/booking/login")
-def rt_add_view(request):
-    return render(request, "booking/rt_add.html")
-
-
 @require_POST
 @user_passes_test(lambda u: u.is_superuser)
 @login_required(login_url="/booking/login")
@@ -149,8 +144,8 @@ def rt_add(request):
     if not form.is_valid():
         return HttpResponse(status=400)
     name = request.POST["name"]
-    ResourceType.objects.create(name=name)
-    return redirect(reverse("admin_view"))
+    rt = ResourceType.objects.create(name=name)
+    return JsonResponse(serializers.serialize("json", [rt,]), safe=False)
 
 
 @user_passes_test(lambda u: u.is_superuser)

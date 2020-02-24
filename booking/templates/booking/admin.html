@@ -28,12 +28,14 @@
 </table>
 
 <h1>Resource Types</h1>
-<table class="table">
+<table class="table" id="table_rt">
     <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col"><a href="{% url 'rt_add_view' %}">Add new one</a></th>
+            <th scope="col">
+                <a href="" data-toggle="modal" data-target="#modal_add_rt">Add new one</a>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -70,4 +72,25 @@
         {% endfor %}
     </tbody>
 </table>
+<div class="modal fade" id="modal_add_rt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <h4 class="card-title mt-3 text-center">Modifie Resource Type</h4>
+            <form id="form_add_rt" method="POST" action="{% url 'rt_add' %}">
+                {% csrf_token %}
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fas fa-map-marker-alt"></i> </span>
+                    </div>
+                    <input name="name" class="form-control" placeholder="name" type="text" required>
+                </div> <!-- form-group// -->
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> Done </button>
+                </div> <!-- form-group// -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="{% static 'booking/js/admin.js' %}"></script>
 {% endblock %}
