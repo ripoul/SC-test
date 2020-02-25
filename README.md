@@ -12,6 +12,37 @@ La partie front niveau 2 doit se faire si possible via la bibliothèque React (h
 Le projet doit contenir un fichier requirements.txt qui liste les dépendances Python, et doit être utilisable via un virtualenv (https://python-guide-pt-br.readthedocs.io/fr/latest/dev/virtualenvs.html).
 Enfin, le projet doit être versionné avec Git, et hébergé sur un dépôt comme GitHub, Gitlab, ou encore Bitbucket. 
 
+# Configurations
+
+## Installation de l'application
+
+```
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py data
+python manage.py runserver
+```
+
+## requierements par niveau
+Voici le contenu des fichiers requirements.txt par niveau, en récapitulatif.
+
+Niveau 1: 
+
+- Django<3
+
+Niveau 2: 
+
+- Django<3
+- social-auth-app-django 
+- djangorestframework 
+
+Niveau 3: 
+
+- Django<3
+- social-auth-app-django 
+- djangorestframework 
+- tornado
+
 # Règles
 ## Règles de base 
 
@@ -62,29 +93,3 @@ Enfin, le projet doit être versionné avec Git, et hébergé sur un dépôt com
 
 - Les interactions en temps réel doivent se faire via le protocole WebSocket en utilisant le framework Tornado (http://www.tornadoweb.org/en/stable/). Il faut trouver le moyen de faire communiquer Django et Tornado. 
 - Intégration Docker (https://www.docker.com/): proposer un fichier docker-compose.yml pour démarrer l'application. 
-
- 
-# Configurations
-Voici le contenu des fichiers requirements.txt par niveau, en récapitulatif.
-
-Niveau 1: 
-
-- Django<3
-
-Niveau 2: 
-
-- Django<3
-
-- social-auth-app-django 
-
-- djangorestframework 
-
-Niveau 3: 
-
-- Django<3
-
-- social-auth-app-django 
-
-- djangorestframework 
-
-- tornado
