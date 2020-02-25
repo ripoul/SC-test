@@ -29,3 +29,14 @@ class Reservation(models.Model):
     end_date = models.DateTimeField(auto_now=False)
     resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def check_overlap(self, fixed_start, fixed_end, new_start, new_end):
+        overlap = False
+        if new_start == fixed_end or new_end == fixed_start:    #edge case
+            overlap = False
+        elif (new_start >= fixed_start and new_start <= fixed_end) or (new_end >= fixed_start and new_end <= fixed_end): #innner limits
+            overlap = True
+        elif new_start <= fixed_start and new_end >= fixed_end: #outter limits
+            overlap = True
+ 
+        return overlap

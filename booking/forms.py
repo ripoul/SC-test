@@ -37,3 +37,6 @@ class ResourceAddValidationForm(forms.Form):
     word = forms.CharField()
     location = forms.IntegerField()
     rt = forms.IntegerField()
+
+class ReservationDeleteValidationForm(forms.Form):
+    id = forms.IntegerField()

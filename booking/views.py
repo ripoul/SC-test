@@ -16,13 +16,9 @@ from booking.forms import (
     RtAddValidationForm,
     ResourceValidationForm,
     ResourceAddValidationForm,
+    ReservationDeleteValidationForm
 )
 from booking.models import Location, Reservation, Resource, ResourceType
-
-
-@login_required(login_url="/booking/login")
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
 
 
 def login_view(request):
@@ -193,3 +189,31 @@ def resource_add(request):
 
     resource = Resource.objects.create(word=word, resource_type=rt, location=location)
     return JsonResponse(serializers.serialize("json", [resource,], use_natural_foreign_keys=True), safe=False)
+
+@login_required(login_url="/booking/login")
+def index(request):
+    resources = Resource.objects.all()
+    reservations_user = Reservation.objects.filter(owner=request.user)
+
+    context = {
+        "resources": resources,
+        "reservations_user":reservations_user,
+    }
+    return render(request, "booking/index.html", context)
+
+
+@require_POST
+@login_required(login_url="/booking/login")
+def delete_reservation(request):
+    form = ReservationDeleteValidationForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return HttpResponse(status=400)
+    id_reservation = request.POST['id']
+
+    reservation = Reservation.objects.get(id=id_reservation)
+
+    if reservation.owner != request.user:
+        return HttpResponse(status=403)
+    reservation.delete()
+    return HttpResponse(status=204)
+

@@ -1,0 +1,46 @@
+{% extends "booking/base.html" %}
+{% load static %}
+{% block title %} admin {% endblock %}
+{% block css %}
+
+{% endblock %}
+{% block content %}
+<h1>Vos réservation</h1>
+
+<table class="table" id="table_reservation">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">title</th>
+            <th scope="col">start date</th>
+            <th scope="col">end date</th>
+            <th scope="col">resource</th>
+            <th scope="col">location</th>
+            <th scope="col"><a href="" data-toggle="modal" data-target="#modal_add_location">Add new one</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in reservations_user %}
+        <tr>
+            <th scope="row">{{ reservation.id }}</th>
+            <td>{{ reservation.title }}</td>
+            <td>{{ reservation.start_date }}</td>
+            <td>{{ reservation.end_date }}</td>
+            <td>{{ reservation.resource.word }}</td>
+            <td>{{ reservation.resource.location.name }}</td>
+            <td>
+                <form class="form_delete_reservation" action="{% url 'reservation_delete' %}">
+                    <input id="id" name="id" class="form-control" type="text" value="{{ reservation.id }}" required
+                        hidden readonly>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block"> Delete </button>
+                    </div> <!-- form-group// -->
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script type="text/javascript" src="{% static 'booking/js/index.js' %}"></script>
+{% endblock %}
