@@ -16,7 +16,7 @@
             <th scope="col">end date</th>
             <th scope="col">resource</th>
             <th scope="col">location</th>
-            <th scope="col"><a href="" data-toggle="modal" data-target="#modal_add_location">Add new one</a></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -39,6 +39,67 @@
                 </form>
             </td>
         </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h1>Ressources disponible</h1>
+<table class="table" id="table_resource">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">word</th>
+            <th scope="col">resource type</th>
+            <th scope="col">location</th>
+            <th scope="col"><a href="" data-toggle="modal" data-target="#modal_add_location">Add new one</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ressource in resources %}
+        <tr>
+            <th scope="row">{{ ressource.id }}</th>
+            <td>{{ ressource.word }}</td>
+            <td>{{ ressource.resource_type.name }}</td>
+            <td>{{ ressource.location.name }}</td>
+            <td>
+                <a href="" data-toggle="modal" data-target="#modal_add_reservation_{{ ressource.id }}">Add new one</a>
+                <!--Modal resource type-->
+                <div class="modal fade" id="modal_add_reservation_{{ ressource.id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <h4 class="card-title mt-3 text-center">Add reservation on this resource</h4>
+                            <form class="form_add_reservation" method="POST" action="{% url 'reservation_add' %}">
+                                <input id="id_resource" name="id_resource" class="form-control" type="text"
+                                    value="{{ ressource.id }}" required hidden readonly>
+                                {% csrf_token %}
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fas fa-font"></i> </span>
+                                    </div>
+                                    <input class="form-control" id="" type="text" name="title">
+                                </div> <!-- form-group// -->
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+                                    </div>
+                                    <input class="form-control" id="" type="datetime-local" name="start_date">
+                                </div> <!-- form-group// -->
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fas fa-calendar-alt"></i> </span>
+                                    </div>
+                                    <input class="form-control" id="" type="datetime-local" name="end_date">
+                                </div> <!-- form-group// -->
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block"> Done </button>
+                                </div> <!-- form-group// -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
         {% endfor %}
     </tbody>
 </table>

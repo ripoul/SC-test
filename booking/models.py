@@ -6,13 +6,13 @@ class ResourceType(models.Model):
     name = models.CharField(max_length=200)
 
     def natural_key(self):
-        return (self.name)
+        return self.name
 
 
 class Location(models.Model):
     name = models.CharField(max_length=200)
     capacity = models.IntegerField()
-    
+
     def natural_key(self):
         return (self.name,)
 
@@ -21,6 +21,9 @@ class Resource(models.Model):
     resource_type = models.ForeignKey(ResourceType, on_delete=models.CASCADE)
     word = models.CharField(max_length=200)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
+
+    def natural_key(self):
+        return (self.word, self.location.name)
 
 
 class Reservation(models.Model):
@@ -32,11 +35,13 @@ class Reservation(models.Model):
 
     def check_overlap(self, fixed_start, fixed_end, new_start, new_end):
         overlap = False
-        if new_start == fixed_end or new_end == fixed_start:    #edge case
+        if new_start == fixed_end or new_end == fixed_start:  # edge case
             overlap = False
-        elif (new_start >= fixed_start and new_start <= fixed_end) or (new_end >= fixed_start and new_end <= fixed_end): #innner limits
+        elif (new_start >= fixed_start and new_start <= fixed_end) or (
+            new_end >= fixed_start and new_end <= fixed_end
+        ):  # innner limits
             overlap = True
-        elif new_start <= fixed_start and new_end >= fixed_end: #outter limits
+        elif new_start <= fixed_start and new_end >= fixed_end:  # outter limits
             overlap = True
- 
+
         return overlap

@@ -15,6 +15,7 @@ urlpatterns = [
     path("resource/edit/", views.resource_edit, name="resource_edit"),
     path("resource/add/", views.resource_add, name="resource_add"),
     path("reservation/delete/", views.delete_reservation, name="reservation_delete"),
+    path("reservation/add/", views.reservation_add, name="reservation_add"),
     path("auth/", views.auth, name="auth"),
     path("", views.index, name="index"),
 ]

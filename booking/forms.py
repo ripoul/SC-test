@@ -38,5 +38,13 @@ class ResourceAddValidationForm(forms.Form):
     location = forms.IntegerField()
     rt = forms.IntegerField()
 
+
 class ReservationDeleteValidationForm(forms.Form):
     id = forms.IntegerField()
+
+
+class ReservationAddValidationForm(forms.Form):
+    id_resource = forms.IntegerField()
+    title = forms.CharField()
+    start_date = forms.DateTimeField(input_formats=["%Y-%m-%dT%H:%M",])
+    end_date = forms.DateTimeField(input_formats=["%Y-%m-%dT%H:%M",])

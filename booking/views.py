@@ -16,9 +16,12 @@ from booking.forms import (
     RtAddValidationForm,
     ResourceValidationForm,
     ResourceAddValidationForm,
-    ReservationDeleteValidationForm
+    ReservationDeleteValidationForm,
+    ReservationAddValidationForm,
 )
 from booking.models import Location, Reservation, Resource, ResourceType
+
+from datetime import datetime
 
 
 def login_view(request):
@@ -188,7 +191,11 @@ def resource_add(request):
     location = Location.objects.get(id=location_id)
 
     resource = Resource.objects.create(word=word, resource_type=rt, location=location)
-    return JsonResponse(serializers.serialize("json", [resource,], use_natural_foreign_keys=True), safe=False)
+    return JsonResponse(
+        serializers.serialize("json", [resource,], use_natural_foreign_keys=True),
+        safe=False,
+    )
+
 
 @login_required(login_url="/booking/login")
 def index(request):
@@ -196,8 +203,9 @@ def index(request):
     reservations_user = Reservation.objects.filter(owner=request.user)
 
     context = {
+        "form_add_reservation": ReservationAddValidationForm,
         "resources": resources,
-        "reservations_user":reservations_user,
+        "reservations_user": reservations_user,
     }
     return render(request, "booking/index.html", context)
 
@@ -208,7 +216,7 @@ def delete_reservation(request):
     form = ReservationDeleteValidationForm(request.POST, request.FILES)
     if not form.is_valid():
         return HttpResponse(status=400)
-    id_reservation = request.POST['id']
+    id_reservation = request.POST["id"]
 
     reservation = Reservation.objects.get(id=id_reservation)
 
@@ -217,3 +225,32 @@ def delete_reservation(request):
     reservation.delete()
     return HttpResponse(status=204)
 
+
+@require_POST
+@login_required(login_url="/booking/login")
+def reservation_add(request):
+    form = ReservationAddValidationForm(request.POST, request.FILES)
+    if not form.is_valid():
+        return HttpResponse(status=400)
+    id_resource = request.POST["id_resource"]
+    title = request.POST["title"]
+    start_date = request.POST["start_date"]  #
+    end_date = request.POST["end_date"]  #%Y-%m-%dT%H:%M
+
+    resource = Resource.objects.get(id=id_resource)
+
+    start_date = datetime.strptime(start_date, "%Y-%m-%dT%H:%M")
+    end_date = datetime.strptime(end_date, "%Y-%m-%dT%H:%M")
+
+    reservation = Reservation.objects.create(
+        title=title,
+        start_date=start_date,
+        end_date=end_date,
+        resource=resource,
+        owner=request.user,
+    )
+
+    return JsonResponse(
+        serializers.serialize("json", [reservation,], use_natural_foreign_keys=True),
+        safe=False,
+    )
