@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ValidationError
 
 class ResourceType(models.Model):
     name = models.CharField(max_length=200)
@@ -47,3 +47,14 @@ class Reservation(models.Model):
             overlap = True
 
         return overlap
+
+    @classmethod
+    def create(cls, title, start_date, end_date, resource, owner):
+        for reservation in resource.reservations.all():
+            if reservation.check_overlap(start_date, end_date):
+                raise ValidationError("already busy")
+        
+        if start_date>=end_date:
+            raise ValidationError("start date must be before end date")
+        reservation = cls(title=title, start_date=start_date, end_date=end_date, resource=resource, owner=owner)
+        return reservation

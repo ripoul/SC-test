@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.core import serializers
+from django.core.exceptions import ValidationError
 
 from booking.forms import (
     AuthValidationForm,
@@ -247,13 +248,17 @@ def reservation_add(request):
         if reservation.check_overlap(start_date, end_date):
             return HttpResponse("already busy", status=400)
 
-    reservation = Reservation.objects.create(
-        title=title,
-        start_date=start_date,
-        end_date=end_date,
-        resource=resource,
-        owner=request.user,
-    )
+    try:
+        reservation = Reservation.create(
+            title=title,
+            start_date=start_date,
+            end_date=end_date,
+            resource=resource,
+            owner=request.user,
+        )
+        reservation.save()
+    except ValidationError as e:
+        return HttpResponse(e.message, status=400)
 
     return JsonResponse(
         serializers.serialize("json", [reservation,], use_natural_foreign_keys=True),
