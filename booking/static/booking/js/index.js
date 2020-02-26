@@ -34,17 +34,3 @@ $(document).ready(function () {
         });
     });
 });
-
-[
-    {
-        "model": "booking.reservation",
-        "pk": 11,
-        "fields": {
-            "title": "V2",
-            "start_date": "2020-02-01T10:00:00",
-            "end_date": "2020-02-01T11:00:00",
-            "resource": ["capteur de pr\u00e9sence ref 5478", "salle de r\u00e9union 300"],
-            "owner": ["admin"]
-        }
-    }
-]
