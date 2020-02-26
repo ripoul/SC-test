@@ -22,6 +22,7 @@ from booking.forms import (
 from booking.models import Location, Reservation, Resource, ResourceType
 
 from datetime import datetime
+import pytz
 
 
 def login_view(request):
@@ -238,9 +239,13 @@ def reservation_add(request):
     end_date = request.POST["end_date"]  #%Y-%m-%dT%H:%M
 
     resource = Resource.objects.get(id=id_resource)
+    utc = pytz.UTC
+    start_date = utc.localize(datetime.strptime(start_date, "%Y-%m-%dT%H:%M"))
+    end_date = utc.localize(datetime.strptime(end_date, "%Y-%m-%dT%H:%M"))
 
-    start_date = datetime.strptime(start_date, "%Y-%m-%dT%H:%M")
-    end_date = datetime.strptime(end_date, "%Y-%m-%dT%H:%M")
+    for reservation in resource.reservations.all():
+        if reservation.check_overlap(start_date, end_date):
+            return HttpResponse("already busy", status=400)
 
     reservation = Reservation.objects.create(
         title=title,

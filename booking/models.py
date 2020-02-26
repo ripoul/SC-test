@@ -30,18 +30,20 @@ class Reservation(models.Model):
     title = models.CharField(max_length=200)
     start_date = models.DateTimeField(auto_now=False)
     end_date = models.DateTimeField(auto_now=False)
-    resource = models.ForeignKey(Resource, on_delete=models.CASCADE)
+    resource = models.ForeignKey(
+        Resource, on_delete=models.CASCADE, related_name="reservations"
+    )
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def check_overlap(self, fixed_start, fixed_end, new_start, new_end):
+    def check_overlap(self, new_start, new_end):
         overlap = False
-        if new_start == fixed_end or new_end == fixed_start:  # edge case
+        if new_start == self.end_date or new_end == self.start_date:  # edge case
             overlap = False
-        elif (new_start >= fixed_start and new_start <= fixed_end) or (
-            new_end >= fixed_start and new_end <= fixed_end
+        elif (new_start >= self.start_date and new_start <= self.end_date) or (
+            new_end >= self.start_date and new_end <= self.end_date
         ):  # innner limits
             overlap = True
-        elif new_start <= fixed_start and new_end >= fixed_end:  # outter limits
+        elif new_start <= self.start_date and new_end >= self.end_date:  # outter limits
             overlap = True
 
         return overlap

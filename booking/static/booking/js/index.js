@@ -29,7 +29,7 @@ $(document).ready(function () {
                 $('.modal').modal('hide');
             },
             error: function (data) {
-                alert(data)
+                alert(data.responseText)
             }
         });
     });
