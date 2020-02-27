@@ -29,6 +29,9 @@
             <td>{{ reservation.resource.word }}</td>
             <td>{{ reservation.resource.location.name }}</td>
             <td>
+                {% if reservation.is_past %}
+                Ended
+                {% else %}
                 <form class="form_delete_reservation" action="{% url 'reservation_delete' %}">
                     <input id="id" name="id" class="form-control" type="text" value="{{ reservation.id }}" required
                         hidden readonly>
@@ -37,6 +40,7 @@
                         <button type="submit" class="btn btn-primary btn-block"> Delete </button>
                     </div> <!-- form-group// -->
                 </form>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
@@ -50,7 +54,7 @@
             <th scope="col">word</th>
             <th scope="col">resource type</th>
             <th scope="col">location</th>
-            <th scope="col"><a href="" data-toggle="modal" data-target="#modal_add_location">Add new one</a></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>

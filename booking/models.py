@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from datetime import datetime
+import pytz
+
 class ResourceType(models.Model):
     name = models.CharField(max_length=200)
 
@@ -58,3 +61,8 @@ class Reservation(models.Model):
             raise ValidationError("start date must be before end date")
         reservation = cls(title=title, start_date=start_date, end_date=end_date, resource=resource, owner=owner)
         return reservation
+    
+    @property
+    def is_past(self):
+        utc = pytz.UTC
+        return utc.localize(datetime.now()) > self.start_date
