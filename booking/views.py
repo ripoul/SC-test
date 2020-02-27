@@ -244,10 +244,6 @@ def reservation_add(request):
     start_date = utc.localize(datetime.strptime(start_date, "%Y-%m-%dT%H:%M"))
     end_date = utc.localize(datetime.strptime(end_date, "%Y-%m-%dT%H:%M"))
 
-    for reservation in resource.reservations.all():
-        if reservation.check_overlap(start_date, end_date):
-            return HttpResponse("already busy", status=400)
-
     try:
         reservation = Reservation.create(
             title=title,
