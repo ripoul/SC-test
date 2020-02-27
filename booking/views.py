@@ -202,7 +202,10 @@ def resource_add(request):
 @login_required(login_url="/booking/login")
 def index(request):
     resources = Resource.objects.all()
-    reservations_user = Reservation.objects.filter(owner=request.user)
+    if request.user.is_superuser:
+        reservations_user = Reservation.objects.all()
+    else:
+        reservations_user = Reservation.objects.filter(owner=request.user)
 
     context = {
         "form_add_reservation": ReservationAddValidationForm,
@@ -222,7 +225,7 @@ def delete_reservation(request):
 
     reservation = Reservation.objects.get(id=id_reservation)
 
-    if reservation.owner != request.user:
+    if reservation.owner != request.user and not request.user.is_superuser:
         return HttpResponse(status=403)
     reservation.delete()
     return HttpResponse(status=204)
