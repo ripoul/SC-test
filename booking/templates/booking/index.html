@@ -1,21 +1,22 @@
 {% extends "booking/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block title %} admin {% endblock %}
 {% block css %}
 
 {% endblock %}
 {% block content %}
-<h1>Vos réservation</h1>
+<h1>{% trans 'Your Reservations' %}</h1>
 
 <table class="table" id="table_reservation">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">title</th>
-            <th scope="col">start date</th>
-            <th scope="col">end date</th>
-            <th scope="col">resource</th>
-            <th scope="col">location</th>
+            <th scope="col">{% trans 'Title' %}</th>
+            <th scope="col">{% trans 'start date' %}</th>
+            <th scope="col">{% trans 'end date' %}</th>
+            <th scope="col">{% trans 'resource' %}</th>
+            <th scope="col">{% trans 'location' %}</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -30,14 +31,14 @@
             <td>{{ reservation.resource.location.name }}</td>
             <td>
                 {% if reservation.is_past %}
-                Ended
+                {% trans 'Reservation Over' %}
                 {% else %}
                 <form class="form_delete_reservation" action="{% url 'reservation_delete' %}">
                     <input id="id" name="id" class="form-control" type="text" value="{{ reservation.id }}" required
                         hidden readonly>
                     {% csrf_token %}
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block"> Delete </button>
+                        <button type="submit" class="btn btn-primary btn-block"> {% trans 'Delete' %} </button>
                     </div> <!-- form-group// -->
                 </form>
                 {% endif %}
@@ -46,14 +47,14 @@
         {% endfor %}
     </tbody>
 </table>
-<h1>Ressources disponible</h1>
+<h1>{% trans 'Resources Available' %}</h1>
 <table class="table" id="table_resource">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">word</th>
-            <th scope="col">resource type</th>
-            <th scope="col">location</th>
+            <th scope="col">{% trans 'word' %}</th>
+            <th scope="col">{% trans 'resource type' %}</th>
+            <th scope="col">{% trans 'location' %}</th>
             <th scope="col"></th>
         </tr>
     </thead>
@@ -71,7 +72,7 @@
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <h4 class="card-title mt-3 text-center">Add reservation on this resource</h4>
+                            <h4 class="card-title mt-3 text-center">{% trans 'Add reservation on this resource' %}</h4>
                             <form class="form_add_reservation" method="POST" action="{% url 'reservation_add' %}">
                                 <input id="id_resource" name="id_resource" class="form-control" type="text"
                                     value="{{ ressource.id }}" required hidden readonly>
@@ -95,7 +96,8 @@
                                     <input class="form-control" id="" type="datetime-local" name="end_date">
                                 </div> <!-- form-group// -->
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary btn-block"> Done </button>
+                                    <button type="submit" class="btn btn-primary btn-block"> {% trans 'Validate' %}
+                                    </button>
                                 </div> <!-- form-group// -->
                             </form>
                         </div>
