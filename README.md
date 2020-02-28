@@ -20,6 +20,7 @@ Enfin, le projet doit être versionné avec Git, et hébergé sur un dépôt com
 pip install -r requirements.txt
 python manage.py migrate
 python manage.py data
+python manage.py compilemessages
 python manage.py runserver
 ```
 
