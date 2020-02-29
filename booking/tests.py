@@ -6,6 +6,7 @@ from django.urls import reverse
 from . import views
 from datetime import datetime
 import pytz
+import json
 
 
 class dataForTests(TestCase):
@@ -305,3 +306,35 @@ class bookingTests(dataForTests):
             {"id": 2, "word": "pad 32", "location": 1, "rt": 1},
         )
         self.assertEqual(response.status_code, 404)
+
+    def test_location_add_user_get(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.get(reverse("location_add"))
+        self.assertEqual(response.status_code, 405)
+
+    def test_location_add_user_post(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.post(reverse("location_add"))
+        self.assertRedirects(
+            response,
+            reverse("login_view") + "?next=/booking/location/add/",
+            status_code=302,
+            target_status_code=302,
+        )
+
+    def test_location_add_admin_post(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("location_add"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_location_add_admin_post_ok(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("location_add"), {"name": "cuisine", "capacity": 2},)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.json())[0]
+        self.assertEqual(data["fields"]["name"], "cuisine")
+        self.assertEqual(data["fields"]["capacity"], "2")
