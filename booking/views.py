@@ -184,10 +184,22 @@ def resource_edit(request):
     word = request.POST["word"]
     location_id = request.POST["location"]
     rt_id = request.POST["location"]
-    rt = ResourceType.objects.get(id=rt_id)
-    location = Location.objects.get(id=location_id)
 
-    resource = Resource.objects.get(id=id_resource)
+    try:
+        resource = Resource.objects.get(id=id_resource)
+    except Resource.DoesNotExist:
+        raise (Http404("Resource does not exist"))
+
+    try:
+        location = Location.objects.get(id=location_id)
+    except Location.DoesNotExist:
+        raise (Http404("Location does not exist"))
+
+    try:
+        rt = ResourceType.objects.get(id=rt_id)
+    except ResourceType.DoesNotExist:
+        raise (Http404("Resource Type does not exist"))
+
     resource.word = word
     resource.location = location
     resource.ResourceType = rt

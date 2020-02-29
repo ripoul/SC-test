@@ -262,3 +262,46 @@ class bookingTests(dataForTests):
         c.login(username="admin", password="admin")
         response = c.post(reverse("rt_edit"), {"id": 2, "name": "pad"})
         self.assertEqual(response.status_code, 404)
+
+    def test_resource_edit_user_get(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.get(reverse("resource_edit"))
+        self.assertEqual(response.status_code, 405)
+
+    def test_resource_edit_user_post(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.post(reverse("resource_edit"))
+        self.assertRedirects(
+            response,
+            reverse("login_view") + "?next=/booking/resource/edit/",
+            status_code=302,
+            target_status_code=302,
+        )
+
+    def test_resource_edit_admin_post(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("resource_edit"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_resource_edit_admin_post_ok(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(
+            reverse("resource_edit"),
+            {"id": 1, "word": "pad 32", "location": 1, "rt": 1},
+        )
+        self.assertRedirects(
+            response, reverse("admin_view"), status_code=302, target_status_code=200,
+        )
+
+    def test_resource_edit_admin_post_not_exist(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(
+            reverse("resource_edit"),
+            {"id": 2, "word": "pad 32", "location": 1, "rt": 1},
+        )
+        self.assertEqual(response.status_code, 404)
