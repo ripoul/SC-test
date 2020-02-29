@@ -66,7 +66,8 @@
             <td>{{ ressource.resource_type.name }}</td>
             <td>{{ ressource.location.name }}</td>
             <td>
-                <a href="" data-toggle="modal" data-target="#modal_add_reservation_{{ ressource.id }}">Add new one</a>
+                <a href="" data-toggle="modal"
+                    data-target="#modal_add_reservation_{{ ressource.id }}">{% trans 'Book this resource' %}</a>
                 <!--Modal resource type-->
                 <div class="modal fade" id="modal_add_reservation_{{ ressource.id }}" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">

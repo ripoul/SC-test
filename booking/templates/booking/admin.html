@@ -1,18 +1,20 @@
 {% extends "booking/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block title %} admin {% endblock %}
 {% block css %}
 
 {% endblock %}
 {% block content %}
-<h1>Locations</h1>
+<h1>{% trans 'Locations' %}</h1>
 <table class="table" id="table_location">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">capacity</th>
-            <th scope="col"><a href="" data-toggle="modal" data-target="#modal_add_location">Add new one</a></th>
+            <th scope="col">{% trans 'Name' %}</th>
+            <th scope="col">{% trans 'Capacity' %}</th>
+            <th scope="col"><a href="" data-toggle="modal"
+                    data-target="#modal_add_location">{% trans 'Add new one' %}</a></th>
         </tr>
     </thead>
     <tbody>
@@ -21,20 +23,20 @@
             <th scope="row">{{ location.id }}</th>
             <td>{{ location.name }}</td>
             <td>{{ location.capacity }}</td>
-            <td><a href="{% url 'location_view' location.id %}">Modifie</a></td>
+            <td><a href="{% url 'location_view' location.id %}">{% trans 'Edit' %}</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<h1>Resource Types</h1>
+<h1>{% trans 'Resource Types' %}</h1>
 <table class="table" id="table_rt">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col">{% trans 'Name' %}</th>
             <th scope="col">
-                <a href="" data-toggle="modal" data-target="#modal_add_rt">Add new one</a>
+                <a href="" data-toggle="modal" data-target="#modal_add_rt">{% trans 'Add new one' %}</a>
             </th>
         </tr>
     </thead>
@@ -43,21 +45,22 @@
         <tr>
             <th scope="row">{{ resourceType.id }}</th>
             <td>{{ resourceType.name }}</td>
-            <td><a href="{% url 'rt_view' resourceType.id %}">Modifie</a></td>
+            <td><a href="{% url 'rt_view' resourceType.id %}">{% trans 'Edit' %}</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<h1>Resources</h1>
+<h1>{% trans 'Resources' %}</h1>
 <table class="table" id="table_resource">
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Resource type</th>
-            <th scope="col">word</th>
-            <th scope="col">location</th>
-            <th scope="col"><a href="" data-toggle="modal" data-target="#modal_add_resource">Add new one</a></th>
+            <th scope="col">{% trans 'Resource type' %}</th>
+            <th scope="col">{% trans 'word' %}</th>
+            <th scope="col">{% trans 'location' %}</th>
+            <th scope="col"><a href="" data-toggle="modal"
+                    data-target="#modal_add_resource">{% trans 'Add new one' %}</a></th>
         </tr>
     </thead>
     <tbody>
@@ -67,7 +70,7 @@
             <td>{{ resource.resource_type.name }}</td>
             <td>{{ resource.word }}</td>
             <td>{{ resource.location.name }}</td>
-            <td><a href="{% url 'resource_view' resource.id %}">Modifie</a></td>
+            <td><a href="{% url 'resource_view' resource.id %}">{% trans 'Edit' %}</a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -76,7 +79,7 @@
 <div class="modal fade" id="modal_add_rt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <h4 class="card-title mt-3 text-center">Modifie Resource Type</h4>
+            <h4 class="card-title mt-3 text-center">{% trans 'Edit Resource Type' %}</h4>
             <form id="form_add_rt" method="POST" action="{% url 'rt_add' %}">
                 {% csrf_token %}
                 <div class="form-group input-group">
@@ -86,7 +89,7 @@
                     <input name="name" class="form-control" placeholder="name" type="text" required>
                 </div> <!-- form-group// -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block"> Done </button>
+                    <button type="submit" class="btn btn-primary btn-block"> {% trans 'Done' %} </button>
                 </div> <!-- form-group// -->
             </form>
         </div>
@@ -97,7 +100,7 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <h4 class="card-title mt-3 text-center">Modifie location</h4>
+            <h4 class="card-title mt-3 text-center">{% trans 'Edit location' %}</h4>
             <form id="form_add_location" method="POST" action="{% url 'location_add' %}">
                 {% csrf_token %}
                 <div class="form-group input-group">
@@ -113,7 +116,7 @@
                     <input name="capacity" class="form-control" placeholder="capacity" type="text" required>
                 </div> <!-- form-group// -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block"> Done </button>
+                    <button type="submit" class="btn btn-primary btn-block">{% trans 'Done' %}</button>
                 </div> <!-- form-group// -->
             </form>
         </div>
@@ -124,7 +127,7 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <h4 class="card-title mt-3 text-center">Add Resource</h4>
+            <h4 class="card-title mt-3 text-center">{% trans 'Add Resource' %}</h4>
             <form id="form_add_resource" method="POST" action="{% url 'resource_add' %}">
                 {% csrf_token %}
                 <div class="form-group input-group">
@@ -156,7 +159,7 @@
                     </select>
                 </div> <!-- form-group// -->
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block"> Done </button>
+                    <button type="submit" class="btn btn-primary btn-block"> {% trans 'Done' %} </button>
                 </div> <!-- form-group// -->
             </form>
         </div>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-27 19:46+0000\n"
+"POT-Creation-Date: 2020-02-29 10:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,95 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: booking/models.py:59
+msgid "already busy"
+msgstr ""
+
+#: booking/models.py:62
+msgid "start date must be before end date"
+msgstr ""
+
+#: booking/templates/booking/admin.html:8
+msgid "Locations"
+msgstr ""
+
+#: booking/templates/booking/admin.html:13
+#: booking/templates/booking/admin.html:36
+msgid "Name"
+msgstr ""
+
+#: booking/templates/booking/admin.html:14
+msgid "Capacity"
+msgstr ""
+
+#: booking/templates/booking/admin.html:16
+#: booking/templates/booking/admin.html:38
+#: booking/templates/booking/admin.html:62
+msgid "Add new one"
+msgstr ""
+
+#: booking/templates/booking/admin.html:25
+#: booking/templates/booking/admin.html:47
+msgid "Edit"
+msgstr ""
+
+#: booking/templates/booking/admin.html:31
+msgid "Resource Types"
+msgstr ""
+
+#: booking/templates/booking/admin.html:53
+msgid "Resources"
+msgstr ""
+
+#: booking/templates/booking/admin.html:58
+msgid "Resource type"
+msgstr ""
+
+#: booking/templates/booking/admin.html:59
+#: booking/templates/booking/index.html:55
+msgid "word"
+msgstr ""
+
+#: booking/templates/booking/admin.html:60
+#: booking/templates/booking/index.html:19
+#: booking/templates/booking/index.html:57
+msgid "location"
+msgstr ""
+
+#: booking/templates/booking/admin.html:72
+msgid "Modifie"
+msgstr ""
+
+#: booking/templates/booking/admin.html:81
+msgid "Edit Resource Type"
+msgstr ""
+
+#: booking/templates/booking/admin.html:91
+#: booking/templates/booking/admin.html:118
+#: booking/templates/booking/admin.html:161
+msgid "Done"
+msgstr ""
+
+#: booking/templates/booking/admin.html:102
+msgid "Edit location"
+msgstr ""
+
+#: booking/templates/booking/admin.html:129
+msgid "Add Resource"
+msgstr ""
+
+#: booking/templates/booking/base.html:49
+msgid "Home"
+msgstr ""
+
+#: booking/templates/booking/base.html:52
+msgid "Admin View"
+msgstr ""
+
+#: booking/templates/booking/base.html:55
+msgid "Logout"
+msgstr ""
 
 #: booking/templates/booking/index.html:9
 msgid "Your Reservations"
@@ -38,11 +127,6 @@ msgstr ""
 msgid "resource"
 msgstr ""
 
-#: booking/templates/booking/index.html:19
-#: booking/templates/booking/index.html:57
-msgid "location"
-msgstr ""
-
 #: booking/templates/booking/index.html:34
 msgid "Reservation Over"
 msgstr ""
@@ -56,19 +140,19 @@ msgstr ""
 msgid "Resources Available"
 msgstr ""
 
-#: booking/templates/booking/index.html:55
-msgid "word"
-msgstr ""
-
 #: booking/templates/booking/index.html:56
 msgid "resource type"
 msgstr ""
 
-#: booking/templates/booking/index.html:75
+#: booking/templates/booking/index.html:70
+msgid "Book this resource"
+msgstr ""
+
+#: booking/templates/booking/index.html:76
 msgid "Add reservation on this resource"
 msgstr ""
 
-#: booking/templates/booking/index.html:99
+#: booking/templates/booking/index.html:100
 msgid "Validate"
 msgstr ""
 

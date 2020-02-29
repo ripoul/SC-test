@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 from datetime import datetime
 import pytz
@@ -55,10 +56,10 @@ class Reservation(models.Model):
     def create(cls, title, start_date, end_date, resource, owner):
         for reservation in resource.reservations.all():
             if reservation.check_overlap(start_date, end_date):
-                raise ValidationError("already busy")
+                raise ValidationError(_("already busy"))
         
         if start_date>=end_date:
-            raise ValidationError("start date must be before end date")
+            raise ValidationError(_("start date must be before end date"))
         reservation = cls(title=title, start_date=start_date, end_date=end_date, resource=resource, owner=owner)
         return reservation
     
