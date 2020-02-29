@@ -22,5 +22,4 @@ jobs:
         black . --check
     - name: Test with pytest
       run: |
-        python manage.py compilemessages
         python manage.py test
