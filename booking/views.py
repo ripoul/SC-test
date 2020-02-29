@@ -278,7 +278,11 @@ def reservation_add(request):
     start_date = request.POST["start_date"]  #
     end_date = request.POST["end_date"]  #%Y-%m-%dT%H:%M
 
-    resource = Resource.objects.get(id=id_resource)
+    try:
+        resource = Resource.objects.get(id=id_resource)
+    except Resource.DoesNotExist:
+        raise (Http404("Resource does not exist"))
+
     utc = pytz.UTC
     start_date = utc.localize(datetime.strptime(start_date, "%Y-%m-%dT%H:%M"))
     end_date = utc.localize(datetime.strptime(end_date, "%Y-%m-%dT%H:%M"))

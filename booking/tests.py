@@ -412,3 +412,98 @@ class bookingTests(dataForTests):
             reverse("resource_add"), {"word": "resource1", "location": 2, "rt": 1},
         )
         self.assertEqual(response.status_code, 404)
+
+    def test_reservation_add_user_get(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.get(reverse("reservation_add"))
+        self.assertEqual(response.status_code, 405)
+
+    def test_reservation_add_admin_post(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("reservation_add"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_reservation_add_admin_post_ok(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        input_formats = [
+            "%Y-%m-%dT%H:%M",
+        ]
+        start_date = datetime(2020, 6, 1, 12, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        end_date = datetime(2020, 6, 1, 13, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        response = c.post(
+            reverse("reservation_add"),
+            {
+                "id_resource": 1,
+                "title": "V2",
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.json())[0]
+        self.assertEqual(data["pk"], 2)
+        self.assertEqual(data["fields"]["title"], "V2")
+        self.assertEqual(data["fields"]["start_date"], "2020-06-01T12:00:00Z")
+        self.assertEqual(data["fields"]["end_date"], "2020-06-01T13:00:00Z")
+        self.assertEqual(data["fields"]["resource"][0], "capteur de présence ref 5478")
+        self.assertEqual(data["fields"]["resource"][1], "salle de réunion 300")
+        self.assertEqual(data["fields"]["owner"][0], "admin")
+
+    def test_resource_add_admin_post_ko(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        start_date = datetime(2025, 6, 1, 12, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        end_date = datetime(2025, 6, 1, 13, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        response = c.post(
+            reverse("reservation_add"),
+            {
+                "id_resource": 2,
+                "title": "V2",
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_reservation_add_admin_post_dates_reversed(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        input_formats = [
+            "%Y-%m-%dT%H:%M",
+        ]
+        start_date = datetime(2023, 6, 1, 12, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        end_date = datetime(2022, 6, 1, 13, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        response = c.post(
+            reverse("reservation_add"),
+            {
+                "id_resource": 1,
+                "title": "V2",
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"start date must be before end date")
+
+    def test_reservation_add_admin_post_dates_busy(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        input_formats = [
+            "%Y-%m-%dT%H:%M",
+        ]
+        start_date = datetime(2019, 6, 1, 12, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        end_date = datetime(2019, 6, 1, 13, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        response = c.post(
+            reverse("reservation_add"),
+            {
+                "id_resource": 1,
+                "title": "V2",
+                "start_date": start_date,
+                "end_date": end_date,
+            },
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, b"already busy")
