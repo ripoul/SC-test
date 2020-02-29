@@ -92,7 +92,10 @@ def location_edit(request):
     name = request.POST["name"]
     capacity = request.POST["capacity"]
 
-    location = Location.objects.get(id=id_loc)
+    try:
+        location = Location.objects.get(id=id_loc)
+    except Location.DoesNotExist:
+        raise (Http404("Location does not exist"))
     location.name = name
     location.capacity = capacity
     location.save()
