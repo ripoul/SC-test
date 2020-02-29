@@ -1,12 +1,13 @@
 {% extends "booking/base.html" %}
 {% load static %}
+{% load i18n %}
 {% block title %} Modifie Location {% endblock %}
 {% block css %}
 
 {% endblock %}
 {% block content %}
 <article class="card-body mx-auto" style="max-width: 400px;">
-    <h4 class="card-title mt-3 text-center">Modifie location</h4>
+    <h4 class="card-title mt-3 text-center">{% trans 'Edit location' %}</h4>
     <form id="form" method="POST" action="{% url 'location_edit' %}">
         <input id="id" name="id" class="form-control" type="text" value="{{ location.id }}" required hidden readonly>
         {% csrf_token %}
@@ -24,7 +25,7 @@
                 value="{{ location.capacity }}" required>
         </div> <!-- form-group// -->
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block"> Done </button>
+            <button type="submit" class="btn btn-primary btn-block"> {% trans 'Validate' %}</button>
         </div> <!-- form-group// -->
     </form>
 </article>
