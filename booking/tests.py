@@ -338,3 +338,34 @@ class bookingTests(dataForTests):
         data = json.loads(response.json())[0]
         self.assertEqual(data["fields"]["name"], "cuisine")
         self.assertEqual(data["fields"]["capacity"], "2")
+
+    def test_rt_add_user_get(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.get(reverse("rt_add"))
+        self.assertEqual(response.status_code, 405)
+
+    def test_rt_add_user_post(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.post(reverse("rt_add"))
+        self.assertRedirects(
+            response,
+            reverse("login_view") + "?next=/booking/rt/add/",
+            status_code=302,
+            target_status_code=302,
+        )
+
+    def test_rt_add_admin_post(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("rt_add"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_rt_add_admin_post_ok(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("rt_add"), {"name": "test"},)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.json())[0]
+        self.assertEqual(data["fields"]["name"], "test")
