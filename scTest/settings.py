@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -121,12 +121,10 @@ LOGIN_URL = "/booking/login/"
 
 # Provide a lists of languages which your site supports.
 LANGUAGES = (
-    ('en', _('English')),
-    ('fr', _('French')),
+    ("en", _("English")),
+    ("fr", _("French")),
 )
 # Set the default language for your site.
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = "en"
 # Tell Django where the project's translation files should be.
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
+LOCALE_PATHS = (os.path.join(BASE_DIR, "locale"),)

@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 from datetime import datetime
 import pytz
 
+
 class ResourceType(models.Model):
     name = models.CharField(max_length=200)
 
@@ -57,12 +58,18 @@ class Reservation(models.Model):
         for reservation in resource.reservations.all():
             if reservation.check_overlap(start_date, end_date):
                 raise ValidationError(_("already busy"))
-        
-        if start_date>=end_date:
+
+        if start_date >= end_date:
             raise ValidationError(_("start date must be before end date"))
-        reservation = cls(title=title, start_date=start_date, end_date=end_date, resource=resource, owner=owner)
+        reservation = cls(
+            title=title,
+            start_date=start_date,
+            end_date=end_date,
+            resource=resource,
+            owner=owner,
+        )
         return reservation
-    
+
     @property
     def is_past(self):
         utc = pytz.UTC
