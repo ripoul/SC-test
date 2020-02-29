@@ -1,5 +1,7 @@
 <h1 align="center">Welcome to SC-test 👋</h1>
 
+![Python application](https://github.com/ripoul/SC-test/workflows/Python%20application/badge.svg)
+
 Le principe du test est de faire un sous-ensemble d'une plateforme de réservation de ressources, ce qui fait partie de notre quotidien.
 Une ressource est composée d'un libellé, d'un type de ressource, d'une localisation et d'une capacité (nombre de personnes).
 Une réservation est composée d'un titre, d'une date de début et d'une date de fin. 
