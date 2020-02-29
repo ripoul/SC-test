@@ -75,8 +75,8 @@ def location_view(request, id_loc):
     try:
         location = Location.objects.get(id=id_loc)
     except Location.DoesNotExist:
-        raise(Http404("Location does not exist"))
-    
+        raise (Http404("Location does not exist"))
+
     context = {"location": location}
     return render(request, "booking/location_edit.html", context)
 
@@ -118,7 +118,7 @@ def rt_view(request, id_rt):
     try:
         rt = ResourceType.objects.get(id=id_rt)
     except ResourceType.DoesNotExist:
-        raise(Http404("Resource type does not exist"))
+        raise (Http404("Resource type does not exist"))
     context = {"ResourceType": rt}
     return render(request, "booking/rt_edit.html", context)
 
@@ -156,7 +156,7 @@ def resource_view(request, id_resource):
     try:
         resource = Resource.objects.get(id=id_resource)
     except Resource.DoesNotExist:
-        raise(Http404("Resource does not exist"))
+        raise (Http404("Resource does not exist"))
     resourceTypes = ResourceType.objects.all()
     locations = Location.objects.all()
     context = {

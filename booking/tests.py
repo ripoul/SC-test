@@ -138,7 +138,7 @@ class bookingTests(dataForTests):
         c.login(username="admin", password="admin")
         response = c.get(reverse("location_view", args=[2,]))
         self.assertEqual(response.status_code, 404)
-    
+
     def test_rt_view_user(self):
         c = Client()
         c.login(username="user", password="user")
