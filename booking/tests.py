@@ -369,3 +369,42 @@ class bookingTests(dataForTests):
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.json())[0]
         self.assertEqual(data["fields"]["name"], "test")
+
+    def test_resource_add_user_get(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.get(reverse("resource_add"))
+        self.assertEqual(response.status_code, 405)
+
+    def test_resource_add_user_post(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.post(reverse("resource_add"))
+        self.assertRedirects(
+            response,
+            reverse("login_view") + "?next=/booking/resource/add/",
+            status_code=302,
+            target_status_code=302,
+        )
+
+    def test_resource_add_admin_post(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("resource_add"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_resource_add_admin_post_ok(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("resource_add"), {"word": "resource1", "location": 1, "rt":1},)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.json())[0]
+        self.assertEqual(data["fields"]["word"], "resource1")
+        self.assertEqual(data["fields"]["resource_type"], "écran")
+        self.assertEqual(data["fields"]["location"][0], "salle de réunion 300")
+    
+    def test_resource_add_admin_post_ko(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("resource_add"), {"word": "resource1", "location": 2, "rt":1},)
+        self.assertEqual(response.status_code, 404)
