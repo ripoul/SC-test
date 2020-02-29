@@ -396,15 +396,19 @@ class bookingTests(dataForTests):
     def test_resource_add_admin_post_ok(self):
         c = Client()
         c.login(username="admin", password="admin")
-        response = c.post(reverse("resource_add"), {"word": "resource1", "location": 1, "rt":1},)
+        response = c.post(
+            reverse("resource_add"), {"word": "resource1", "location": 1, "rt": 1},
+        )
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.json())[0]
         self.assertEqual(data["fields"]["word"], "resource1")
         self.assertEqual(data["fields"]["resource_type"], "écran")
         self.assertEqual(data["fields"]["location"][0], "salle de réunion 300")
-    
+
     def test_resource_add_admin_post_ko(self):
         c = Client()
         c.login(username="admin", password="admin")
-        response = c.post(reverse("resource_add"), {"word": "resource1", "location": 2, "rt":1},)
+        response = c.post(
+            reverse("resource_add"), {"word": "resource1", "location": 2, "rt": 1},
+        )
         self.assertEqual(response.status_code, 404)
