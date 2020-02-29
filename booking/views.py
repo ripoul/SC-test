@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods, require_POST
@@ -72,7 +72,11 @@ def admin_view(request):
 @user_passes_test(lambda u: u.is_superuser)
 @login_required(login_url="/booking/login")
 def location_view(request, id_loc):
-    location = Location.objects.get(id=id_loc)
+    try:
+        location = Location.objects.get(id=id_loc)
+    except Location.DoesNotExist:
+        raise(Http404("Location does not exist"))
+    
     context = {"location": location}
     return render(request, "booking/location_edit.html", context)
 
@@ -111,7 +115,10 @@ def location_add(request):
 @user_passes_test(lambda u: u.is_superuser)
 @login_required(login_url="/booking/login")
 def rt_view(request, id_rt):
-    rt = ResourceType.objects.get(id=id_rt)
+    try:
+        rt = ResourceType.objects.get(id=id_rt)
+    except ResourceType.DoesNotExist:
+        raise(Http404("Resource type does not exist"))
     context = {"ResourceType": rt}
     return render(request, "booking/rt_edit.html", context)
 
@@ -146,7 +153,10 @@ def rt_add(request):
 @user_passes_test(lambda u: u.is_superuser)
 @login_required(login_url="/booking/login")
 def resource_view(request, id_resource):
-    resource = Resource.objects.get(id=id_resource)
+    try:
+        resource = Resource.objects.get(id=id_resource)
+    except Resource.DoesNotExist:
+        raise(Http404("Resource does not exist"))
     resourceTypes = ResourceType.objects.all()
     locations = Location.objects.all()
     context = {
