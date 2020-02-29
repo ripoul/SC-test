@@ -135,7 +135,10 @@ def rt_edit(request):
         return HttpResponse(status=400)
     id_rt = request.POST["id"]
     name = request.POST["name"]
-    rt = ResourceType.objects.get(id=id_rt)
+    try:
+        rt = ResourceType.objects.get(id=id_rt)
+    except ResourceType.DoesNotExist:
+        raise (Http404("Resource Type does not exist"))
     rt.name = name
     rt.save()
     return redirect(reverse("admin_view"))
