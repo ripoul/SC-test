@@ -16,10 +16,20 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install coverage
         pip install -r requirements.txt
     - name: Lint with black
       run: |
         black . --check
     - name: Test with pytest
       run: |
-        python manage.py test
+        coverage run --source='.' manage.py test
+    - name: Codecov
+      uses: codecov/codecov-action@v1.0.5
+      with:
+        # User defined upload name. Visible in Codecov UI
+        name: SC-test
+        # Repository upload token - get it from codecov.io
+        token: ${{ secrets.CODECOV_TOKEN }}
+        # Specify whether or not CI build should fail if Codecov runs into an error during upload
+        fail_ci_if_error: true
