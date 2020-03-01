@@ -34,5 +34,27 @@ class Command(BaseCommand):
             resource=rs1,
             owner=user1,
         )
+        models.Reservation.objects.create(
+            title="reunion2",
+            start_date=datetime(2019, 6, 1, 13, 00, 00),
+            end_date=datetime(2019, 6, 1, 14, 00, 00),
+            resource=rs1,
+            owner=user1,
+        )
+
+        models.Reservation.objects.create(
+            title="reunion",
+            start_date=datetime(2020, 6, 1, 12, 00, 00),
+            end_date=datetime(2020, 6, 1, 13, 00, 00),
+            resource=rs1,
+            owner=user1,
+        )
+        models.Reservation.objects.create(
+            title="reunion2",
+            start_date=datetime(2020, 6, 1, 13, 00, 00),
+            end_date=datetime(2020, 6, 1, 14, 00, 00),
+            resource=rs1,
+            owner=user1,
+        )
 
         self.stdout.write(self.style.SUCCESS("all data created"))
