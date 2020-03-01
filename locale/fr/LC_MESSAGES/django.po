@@ -164,7 +164,7 @@ msgstr "Connectez vous à votre compte"
 
 #: booking/templates/booking/login.html:23
 msgid "Password"
-msgstr "Mot de pass"
+msgstr "Mot de passe"
 
 #: booking/templates/booking/resource_edit.html:10
 msgid "Edit Resource"
