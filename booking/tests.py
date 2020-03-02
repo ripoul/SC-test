@@ -109,14 +109,6 @@ class bookingTests(dataForTests):
         response = views.admin_view(request)
         self.assertEqual(response.status_code, 200)
 
-    def test_logout_connected(self):
-        c = Client()
-        c.login(username="user", password="user")
-        response = c.get(reverse("logout_view"))
-        self.assertRedirects(
-            response, reverse("login_view"), status_code=302, target_status_code=200
-        )
-
     def test_location_view_user(self):
         c = Client()
         c.login(username="user", password="user")
@@ -151,13 +143,13 @@ class bookingTests(dataForTests):
             target_status_code=302,
         )
 
-    def test_location_view_admin(self):
+    def test_rt_view_admin(self):
         c = Client()
         c.login(username="admin", password="admin")
         response = c.get(reverse("rt_view", args=[1,]))
         self.assertEqual(response.status_code, 200)
 
-    def test_location_view_admin_not_exist(self):
+    def test_rt_view_admin_not_exist(self):
         c = Client()
         c.login(username="admin", password="admin")
         response = c.get(reverse("rt_view", args=[2,]))
