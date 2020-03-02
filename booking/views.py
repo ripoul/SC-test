@@ -203,7 +203,7 @@ def resource_edit(request):
     id_resource = request.POST["id"]
     word = request.POST["word"]
     location_id = request.POST["location"]
-    rt_id = request.POST["location"]
+    rt_id = request.POST["rt"]
 
     try:
         resource = Resource.objects.get(id=id_resource)

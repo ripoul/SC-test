@@ -290,12 +290,30 @@ class bookingTests(dataForTests):
             response, reverse("admin_view"), status_code=302, target_status_code=200,
         )
 
-    def test_resource_edit_admin_post_not_exist(self):
+    def test_resource_edit_admin_post_not_exist_resource(self):
         c = Client()
         c.login(username="admin", password="admin")
         response = c.post(
             reverse("resource_edit"),
             {"id": 2, "word": "pad 32", "location": 1, "rt": 1},
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_resource_edit_admin_post_not_exist_location(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(
+            reverse("resource_edit"),
+            {"id": 1, "word": "pad 32", "location": 2, "rt": 1},
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_resource_edit_admin_post_not_exist_rt(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(
+            reverse("resource_edit"),
+            {"id": 1, "word": "pad 32", "location": 1, "rt": 2},
         )
         self.assertEqual(response.status_code, 404)
 
@@ -397,11 +415,19 @@ class bookingTests(dataForTests):
         self.assertEqual(data["fields"]["resource_type"], "écran")
         self.assertEqual(data["fields"]["location"][0], "salle de réunion 300")
 
-    def test_resource_add_admin_post_ko(self):
+    def test_resource_add_admin_post_not_exist_location(self):
         c = Client()
         c.login(username="admin", password="admin")
         response = c.post(
             reverse("resource_add"), {"word": "resource1", "location": 2, "rt": 1},
+        )
+        self.assertEqual(response.status_code, 404)
+
+    def test_resource_add_admin_post_not_exist_rt(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(
+            reverse("resource_add"), {"word": "resource1", "location": 1, "rt": 2},
         )
         self.assertEqual(response.status_code, 404)
 
