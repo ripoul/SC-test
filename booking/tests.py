@@ -35,7 +35,7 @@ class dataForTests(TestCase):
             start_date=self.utc.localize(datetime(2019, 6, 1, 12, 00, 00)),
             end_date=self.utc.localize(datetime(2019, 6, 1, 13, 00, 00)),
             resource=self.rs1,
-            owner=self.user1,
+            owner=self.admin1,
         )
 
         self.factory = RequestFactory()
@@ -499,3 +499,27 @@ class bookingTests(dataForTests):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, b"already busy")
+
+    def test_reservation_del_user_get(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.get(reverse("reservation_delete"))
+        self.assertEqual(response.status_code, 405)
+
+    def test_reservation_del_admin_post(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("reservation_delete"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_reservation_del_admin_post_ok(self):
+        c = Client()
+        c.login(username="admin", password="admin")
+        response = c.post(reverse("reservation_delete"), {"id": "1"},)
+        self.assertEqual(response.status_code, 204)
+
+    def test_reservation_del_admin_post_forbidden(self):
+        c = Client()
+        c.login(username="user", password="user")
+        response = c.post(reverse("reservation_delete"), {"id": "1"},)
+        self.assertEqual(response.status_code, 403)
