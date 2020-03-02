@@ -35,3 +35,4 @@ jobs:
         # Specify whether or not CI build should fail if Codecov runs into an error during upload
         fail_ci_if_error: true
         file: coverage.xml
+        yml: .codecov.yml
