@@ -269,7 +269,7 @@ def index(request):
             reservations_user = cache.get("reservations")
         else:
             reservations_user = Reservation.objects.all()
-            cache.set("reservations", resources)
+            cache.set("resources", resources)
     else:
         reservations_user = Reservation.objects.filter(owner=request.user)
 
