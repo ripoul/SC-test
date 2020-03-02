@@ -110,5 +110,10 @@
         {% endfor %}
     </tbody>
 </table>
+<script>
+    var csrf = `{% csrf_token %}`
+    var reservationDeleteURL = "{% url 'reservation_delete' %}"
+    var deleteValue = "{% trans 'Delete' %}"
+</script>
 <script type="text/javascript" src="{% static 'booking/js/index.js' %}"></script>
 {% endblock %}

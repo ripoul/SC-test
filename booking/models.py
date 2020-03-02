@@ -68,6 +68,10 @@ class Reservation(models.Model):
             resource=resource,
             owner=owner,
         )
+
+        if reservation.is_past:
+            raise ValidationError(_("the reservation have to be not passed"))
+
         return reservation
 
     @property

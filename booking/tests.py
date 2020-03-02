@@ -30,13 +30,13 @@ class dataForTests(TestCase):
 
         self.utc = pytz.UTC
 
-        models.Reservation.create(
+        models.Reservation.objects.create(
             title="reunion",
             start_date=self.utc.localize(datetime(2019, 6, 1, 12, 00, 00)),
             end_date=self.utc.localize(datetime(2019, 6, 1, 13, 00, 00)),
             resource=self.rs1,
             owner=self.user1,
-        ).save()
+        )
 
         self.factory = RequestFactory()
 

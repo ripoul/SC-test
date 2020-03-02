@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.form_delete_reservation').submit(function (e) {
+    $("#table_reservation").on("submit", '.form_delete_reservation', function (e) {
         e.preventDefault();
         $.ajax({
             url: e.target.action,
@@ -10,7 +10,7 @@ $(document).ready(function () {
             }
         });
     });
-    $('.form_add_reservation').submit(function (e) {
+    $('.form_add_reservation').on("submit", function (e) {
         e.preventDefault();
         $.ajax({
             url: e.target.action,
@@ -24,7 +24,17 @@ $(document).ready(function () {
                 end_date = data[0].fields.end_date
                 resource = data[0].fields.resource[0]
                 resource_location = data[0].fields.resource[1]
-                newLigne = `<tr><th scope=\"row\">${id_reservation}</th><td>${title}</td><td>${start_date}</td><td>${end_date}</td><td>${resource}</td><td>${resource_location}</td><td></td></tr>`
+                form = `
+                <form class="form_delete_reservation" action="${reservationDeleteURL}">
+                <input id="id" name="id" class="form-control" type="text" value="${id_reservation}" required
+                    hidden readonly>
+                ${csrf}
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block"> ${deleteValue} </button>
+                </div> <!-- form-group// -->
+            </form>
+                `
+                newLigne = `<tr><th scope=\"row\">${id_reservation}</th><td>${title}</td><td>${start_date}</td><td>${end_date}</td><td>${resource}</td><td>${resource_location}</td><td>${form}</td></tr>`
                 $('#table_reservation > tbody:last-child').append(newLigne);
                 $('.modal').modal('hide');
             },

@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.core import serializers
 from django.core.exceptions import ValidationError
+from django.core.cache import cache
 
 from booking.forms import (
     AuthValidationForm,
@@ -58,9 +59,24 @@ def logout_view(request):
 @user_passes_test(lambda u: u.is_superuser)
 @login_required(login_url="/booking/login")
 def admin_view(request):
-    resources = Resource.objects.all()
-    resourceTypes = ResourceType.objects.all()
-    locations = Location.objects.all()
+    if cache.has_key("resources"):
+        resources = cache.get("resources")
+    else:
+        resources = Resource.objects.all()
+        cache.set("resources", resources)
+
+    if cache.has_key("rt"):
+        resourceTypes = ResourceType.objects.all()
+    else:
+        resourceTypes = ResourceType.objects.all()
+        cache.set("rt", resourceTypes)
+
+    if cache.has_key("locations"):
+        locations = Location.objects.all()
+    else:
+        locations = Location.objects.all()
+        cache.set("locations", locations)
+
     context = {
         "resources": resources,
         "resourceTypes": resourceTypes,
@@ -99,6 +115,7 @@ def location_edit(request):
     location.name = name
     location.capacity = capacity
     location.save()
+    cache.delete("locations")
     return redirect(reverse("admin_view"))
 
 
@@ -112,6 +129,7 @@ def location_add(request):
     name = request.POST["name"]
     capacity = request.POST["capacity"]
     loc = Location.objects.create(name=name, capacity=capacity)
+    cache.delete("locations")
     return JsonResponse(serializers.serialize("json", [loc,]), safe=False)
 
 
@@ -141,6 +159,7 @@ def rt_edit(request):
         raise (Http404("Resource Type does not exist"))
     rt.name = name
     rt.save()
+    cache.delete("rt")
     return redirect(reverse("admin_view"))
 
 
@@ -153,6 +172,7 @@ def rt_add(request):
         return HttpResponse(status=400)
     name = request.POST["name"]
     rt = ResourceType.objects.create(name=name)
+    cache.delete("rt")
     return JsonResponse(serializers.serialize("json", [rt,]), safe=False)
 
 
@@ -204,6 +224,7 @@ def resource_edit(request):
     resource.location = location
     resource.ResourceType = rt
     resource.save()
+    cache.delete("resources")
     return redirect(reverse("admin_view"))
 
 
@@ -229,6 +250,7 @@ def resource_add(request):
         raise (Http404("Location does not exist"))
 
     resource = Resource.objects.create(word=word, resource_type=rt, location=location)
+    cache.delete("resources")
     return JsonResponse(
         serializers.serialize("json", [resource,], use_natural_foreign_keys=True),
         safe=False,
@@ -237,14 +259,21 @@ def resource_add(request):
 
 @login_required(login_url="/booking/login")
 def index(request):
-    resources = Resource.objects.all()
+    if cache.has_key("resources"):
+        resources = cache.get("resources")
+    else:
+        resources = Resource.objects.all()
+        cache.set("resources", resources)
     if request.user.is_superuser:
-        reservations_user = Reservation.objects.all()
+        if cache.has_key("reservations"):
+            reservations_user = cache.get("reservations")
+        else:
+            reservations_user = Reservation.objects.all()
+            cache.set("reservations", resources)
     else:
         reservations_user = Reservation.objects.filter(owner=request.user)
 
     context = {
-        "form_add_reservation": ReservationAddValidationForm,
         "resources": resources,
         "reservations_user": reservations_user,
     }
@@ -260,6 +289,7 @@ def delete_reservation(request):
     id_reservation = request.POST["id"]
 
     reservation = Reservation.objects.get(id=id_reservation)
+    cache.delete("reservations")
 
     if reservation.owner != request.user and not request.user.is_superuser:
         return HttpResponse(status=403)
@@ -298,7 +328,7 @@ def reservation_add(request):
         reservation.save()
     except ValidationError as e:
         return HttpResponse(e.message, status=400)
-
+    cache.delete("reservations")
     return JsonResponse(
         serializers.serialize("json", [reservation,], use_natural_foreign_keys=True),
         safe=False,
