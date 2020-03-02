@@ -523,3 +523,34 @@ class bookingTests(dataForTests):
         c.login(username="user", password="user")
         response = c.post(reverse("reservation_delete"), {"id": "1"},)
         self.assertEqual(response.status_code, 403)
+
+    def test_auth_user_get(self):
+        c = Client()
+        response = c.get(reverse("auth"))
+        self.assertEqual(response.status_code, 405)
+
+    def test_auth_admin_post(self):
+        c = Client()
+        response = c.post(reverse("auth"))
+        self.assertEqual(response.status_code, 400)
+
+    def test_auth_admin_post_ok_admin(self):
+        c = Client()
+        response = c.post(reverse("auth"), {"email": "admin", "password": "admin"},)
+        self.assertRedirects(
+            response, reverse("admin_view"), status_code=302, target_status_code=200,
+        )
+
+    def test_auth_admin_post_ok_user(self):
+        c = Client()
+        response = c.post(reverse("auth"), {"email": "user", "password": "user"},)
+        self.assertRedirects(
+            response, reverse("index"), status_code=302, target_status_code=200,
+        )
+
+    def test_auth_admin_post_forbidden(self):
+        c = Client()
+        response = c.post(
+            reverse("auth"), {"email": "admin", "password": "adminalezhgleagkn"},
+        )
+        self.assertEqual(response.status_code, 403)
