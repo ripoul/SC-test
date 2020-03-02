@@ -52,6 +52,16 @@ class ReservationModelTests(dataForTests):
                 owner=self.user1,
             )
 
+    def test_same_time_reservation_outer(self):
+        with self.assertRaisesMessage(ValidationError, "already busy"):
+            models.Reservation.create(
+                title="reunion",
+                start_date=self.utc.localize(datetime(2090, 6, 1, 11, 00, 00)),
+                end_date=self.utc.localize(datetime(2090, 6, 1, 14, 00, 00)),
+                resource=self.rs1,
+                owner=self.user1,
+            )
+
     def test_start_date_after_end_date(self):
         with self.assertRaisesMessage(
             ValidationError, "start date must be before end date"
