@@ -32,8 +32,8 @@ class dataForTests(TestCase):
 
         models.Reservation.objects.create(
             title="reunion",
-            start_date=self.utc.localize(datetime(2019, 6, 1, 12, 00, 00)),
-            end_date=self.utc.localize(datetime(2019, 6, 1, 13, 00, 00)),
+            start_date=self.utc.localize(datetime(2090, 6, 1, 12, 00, 00)),
+            end_date=self.utc.localize(datetime(2090, 6, 1, 13, 00, 00)),
             resource=self.rs1,
             owner=self.admin1,
         )
@@ -46,8 +46,8 @@ class ReservationModelTests(dataForTests):
         with self.assertRaisesMessage(ValidationError, "already busy"):
             models.Reservation.create(
                 title="reunion",
-                start_date=self.utc.localize(datetime(2019, 6, 1, 12, 00, 00)),
-                end_date=self.utc.localize(datetime(2019, 6, 1, 13, 00, 00)),
+                start_date=self.utc.localize(datetime(2090, 6, 1, 12, 00, 00)),
+                end_date=self.utc.localize(datetime(2090, 6, 1, 13, 00, 00)),
                 resource=self.rs1,
                 owner=self.user1,
             )
@@ -60,6 +60,18 @@ class ReservationModelTests(dataForTests):
                 title="reunion",
                 start_date=self.utc.localize(datetime(2021, 6, 1, 12, 00, 00)),
                 end_date=self.utc.localize(datetime(2020, 6, 1, 13, 00, 00)),
+                resource=self.rs1,
+                owner=self.user1,
+            )
+
+    def test_start_date_passed(self):
+        with self.assertRaisesMessage(
+            ValidationError, "the reservation have to be not passed"
+        ):
+            models.Reservation.create(
+                title="reunion",
+                start_date=self.utc.localize(datetime(2018, 6, 1, 12, 00, 00)),
+                end_date=self.utc.localize(datetime(2018, 6, 1, 13, 00, 00)),
                 resource=self.rs1,
                 owner=self.user1,
             )
@@ -512,8 +524,8 @@ class bookingTests(dataForTests):
         input_formats = [
             "%Y-%m-%dT%H:%M",
         ]
-        start_date = datetime(2019, 6, 1, 12, 00, 00).strftime("%Y-%m-%dT%H:%M")
-        end_date = datetime(2019, 6, 1, 13, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        start_date = datetime(2090, 6, 1, 12, 00, 00).strftime("%Y-%m-%dT%H:%M")
+        end_date = datetime(2090, 6, 1, 13, 00, 00).strftime("%Y-%m-%dT%H:%M")
         response = c.post(
             reverse("reservation_add"),
             {
