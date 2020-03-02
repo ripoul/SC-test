@@ -444,7 +444,7 @@ class bookingTests(dataForTests):
         self.assertEqual(data["fields"]["resource"][1], "salle de réunion 300")
         self.assertEqual(data["fields"]["owner"][0], "admin")
 
-    def test_resource_add_admin_post_ko(self):
+    def test_reservation_add_admin_post_ko(self):
         c = Client()
         c.login(username="admin", password="admin")
         start_date = datetime(2025, 6, 1, 12, 00, 00).strftime("%Y-%m-%dT%H:%M")
