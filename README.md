@@ -25,7 +25,8 @@ python manage.py migrate
 python manage.py data
 python manage.py compilemessages
 python manage.py createcachetable
-python manage.py runserver
+python manage.py collectstatic
+python tornado_main.py
 ```
 
 Pour tester l'application vous pouvez lancer les tests unitaire `python manage.py test` ou lancer l'application et se 

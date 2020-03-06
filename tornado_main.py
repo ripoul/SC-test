@@ -15,6 +15,8 @@ import tornado.web
 import tornado.wsgi
 from scTest.wsgi import application as django_app
 
+import os
+
 
 class MainHandler(tornado.websocket.WebSocketHandler):
     clients = []
@@ -24,6 +26,7 @@ class MainHandler(tornado.websocket.WebSocketHandler):
         print("WebSocket opened")
 
     def on_message(self, message):
+        print("rec : " + message)
         self.write_message(u"You said: " + message)
         self.broadcast_message(u"someone said: " + message)
 
@@ -40,6 +43,11 @@ def make_app():
     return tornado.web.Application(
         [
             (r"/ws", MainHandler),
+            (
+                r"/static/(.*)",
+                tornado.web.StaticFileHandler,
+                dict(path=os.path.join(os.path.dirname(__file__), "static")),
+            ),
             (
                 r"/(.*)",
                 tornado.web.FallbackHandler,
