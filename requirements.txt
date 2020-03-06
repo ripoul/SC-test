@@ -12,3 +12,4 @@ toml==0.10.0
 tornado==6.0.4
 typed-ast==1.4.1
 websocket-client==0.57.0
+websockets==8.1
