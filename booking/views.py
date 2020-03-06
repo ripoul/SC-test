@@ -25,6 +25,8 @@ from booking.models import Location, Reservation, Resource, ResourceType
 
 from datetime import datetime
 import pytz
+import asyncio
+import websockets
 
 
 def login_view(request):
@@ -297,6 +299,14 @@ def delete_reservation(request):
     return HttpResponse(status=204)
 
 
+async def send_msg(msg):
+    async with websockets.connect("ws://localhost:8888/ws") as websocket:
+        try:
+            await websocket.send(msg)
+        except Exception as e:
+            print(e)
+
+
 @require_POST
 @login_required(login_url="/booking/login")
 def reservation_add(request):
@@ -329,7 +339,10 @@ def reservation_add(request):
     except ValidationError as e:
         return HttpResponse(e.message, status=400)
     cache.delete("reservations")
-    return JsonResponse(
-        serializers.serialize("json", [reservation,], use_natural_foreign_keys=True),
-        safe=False,
-    )
+
+    msg = serializers.serialize("json", [reservation,], use_natural_foreign_keys=True)
+
+    loop = asyncio.get_event_loop()
+    task_obj = loop.create_task(send_msg(msg))
+
+    return JsonResponse(msg, safe=False,)
