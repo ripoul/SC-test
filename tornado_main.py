@@ -10,30 +10,29 @@
 # ws.send('hello world')
 
 import tornado.ioloop
+import tornado.websocket
 import tornado.web
 import tornado.wsgi
 from scTest.wsgi import application as django_app
 
 
-class MainHandler(tornado.web.RequestHandler):
-    clients = set()
+class MainHandler(tornado.websocket.WebSocketHandler):
+    clients = []
 
     def open(self):
-        # logging.info('Client connected')
-        MainHandler.clients.add(self)
+        self.clients.append(self)
+        print("WebSocket opened")
 
     def on_message(self, message):
-        # logging.log('Received message')
-        MainHandler.broadcast(message)
+        self.write_message(u"You said: " + message)
+        self.broadcast_message(u"someone said: " + message)
 
     def on_close(self):
-        # logging.info('Client disconnected')
-        if self in MainHandler.clients:
-            MainHandler.clients.remove(self)
+        self.clients.remove(self)
+        print("WebSocket closed")
 
-    @classmethod
-    def broadcast(cls, message):
-        for client in cls.clients:
+    def broadcast_message(self, message):
+        for client in self.clients:
             client.write_message(message)
 
 
@@ -54,4 +53,5 @@ def make_app():
 if __name__ == "__main__":
     app = make_app()
     app.listen(8888)
+    print("app runing on http://localhost:8888/")
     tornado.ioloop.IOLoop.current().start()
