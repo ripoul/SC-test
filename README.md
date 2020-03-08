@@ -32,6 +32,13 @@ python tornado_main.py
 Pour tester l'application vous pouvez lancer les tests unitaire `python manage.py test` ou lancer l'application et se 
 connecter en tant que `admin:admin` ou `user:user`. L'url de connection est `/booking/login/`.
 
+## Docker
+
+```
+docker build -t sc-test .
+docker run -p 8888:8888 sc-test
+```
+
 ## requierements par niveau
 Voici le contenu des fichiers requirements.txt par niveau, en récapitulatif.
 
