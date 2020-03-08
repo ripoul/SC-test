@@ -27,8 +27,7 @@ class MainHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         print("rec : " + message)
-        self.write_message(u"You said: " + message)
-        self.broadcast_message(u"someone said: " + message)
+        self.broadcast_message(message)
 
     def on_close(self):
         self.clients.remove(self)
