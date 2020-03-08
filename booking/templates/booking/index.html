@@ -33,6 +33,7 @@
                 {% if reservation.is_past %}
                 {% trans 'Reservation Over' %}
                 {% else %}
+                {% if user == reservation.owner or user.is_superuser %}
                 <form class="form_delete_reservation" action="{% url 'reservation_delete' %}">
                     <input id="id" name="id" class="form-control" type="text" value="{{ reservation.id }}" required
                         hidden readonly>
@@ -41,6 +42,9 @@
                         <button type="submit" class="btn btn-primary btn-block"> {% trans 'Delete' %} </button>
                     </div> <!-- form-group// -->
                 </form>
+                {% else %}
+                Not yours
+                {% endif %}
                 {% endif %}
             </td>
         </tr>
@@ -114,6 +118,8 @@
     var csrf = `{% csrf_token %}`
     var reservationDeleteURL = "{% url 'reservation_delete' %}"
     var deleteValue = "{% trans 'Delete' %}"
+    var currentUser = "{{ user.username }}"
+    var isSuperuser = "{{ user.is_superuser }}".toLowerCase() == 'true' ? true : false;
 </script>
 <script type="text/javascript" src="{% static 'booking/js/index.js' %}"></script>
 {% endblock %}

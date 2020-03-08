@@ -266,18 +266,15 @@ def index(request):
     else:
         resources = Resource.objects.all()
         cache.set("resources", resources)
-    if request.user.is_superuser:
-        if cache.has_key("reservations"):
-            reservations_user = cache.get("reservations")
-        else:
-            reservations_user = Reservation.objects.all()
-            cache.set("resources", resources)
+    if cache.has_key("reservations"):
+        reservations = cache.get("reservations")
     else:
-        reservations_user = Reservation.objects.filter(owner=request.user)
+        reservations = Reservation.objects.all()
+        cache.set("reservations", reservations)
 
     context = {
         "resources": resources,
-        "reservations_user": reservations_user,
+        "reservations_user": reservations,
     }
     return render(request, "booking/index.html", context)
 
