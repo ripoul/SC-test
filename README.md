@@ -30,7 +30,7 @@ python tornado_main.py
 ```
 
 Pour tester l'application vous pouvez lancer les tests unitaire `python manage.py test` ou lancer l'application et se 
-connecter en tant que `admin:admin` ou `user:user`. L'url de connection est `/booking/login/`.
+connecter en tant que `admin:admin` ou `user:user` ou avec votre compte github si vous avez set `SOCIAL_AUTH_GITHUB_KEY` et `SOCIAL_AUTH_GITHUB_SECRET` dans vos variable d'environnement ou dans un fichier `.env` à la racine du projet. L'url de connection est `/booking/login/`.
 
 ## Docker
 
