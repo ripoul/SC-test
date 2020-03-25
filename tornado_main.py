@@ -57,11 +57,8 @@ def make_app():
     )
 
 
-application = make_app()
-application = tornado.wsgi.WSGIAdapter(application)
-
 if __name__ == "__main__":
     app = make_app()
-    app.listen(8888)
-    print("app runing on http://localhost:8888/")
+    app.listen(os.getenv("PORT", 8888))
+    print(f"app runing on http://localhost:{os.getenv('PORT', 8888)}/")
     tornado.ioloop.IOLoop.current().start()
