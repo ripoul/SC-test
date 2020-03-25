@@ -56,6 +56,8 @@ def make_app():
         debug=True,
     )
 
+application = make_app()
+application = tornado.wsgi.WSGIAdapter(application)
 
 if __name__ == "__main__":
     app = make_app()
