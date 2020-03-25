@@ -30,7 +30,12 @@ SECRET_KEY = "-zvod^c7#d&=@)cc&+xs#b$5x#74usfi4jkvp70z00=yd)ohat"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    ".sc-jlb-test.appspot.com",
+    "sc-jlb-test.appspot.com",
+    ".ripoul.fr",
+    "locahost",
+]
 
 
 # Application definition
