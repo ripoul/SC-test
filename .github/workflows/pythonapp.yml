@@ -4,45 +4,54 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install coverage
-        pip install -r requirements.txt
-    - name: Lint with black
-      run: |
-        black . --check
-    - name: Test with pytest
-      run: |
-        coverage run --source='.' manage.py test
-        coverage xml
-    - name: Codecov
-      uses: codecov/codecov-action@v1.0.5
-      with:
-        # User defined upload name. Visible in Codecov UI
-        name: SC-test
-        # Repository upload token - get it from codecov.io
-        token: ${{ secrets.CODECOV_TOKEN }}
-        # Specify whether or not CI build should fail if Codecov runs into an error during upload
-        fail_ci_if_error: true
-        file: coverage.xml
-        yml: .codecov.yml
-  
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install coverage
+          pip install -r requirements.txt
+      - name: Lint with black
+        run: |
+          black . --check
+      - name: Test with pytest
+        run: |
+          coverage run --source='.' manage.py test
+          coverage xml
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.5
+        with:
+          # User defined upload name. Visible in Codecov UI
+          name: SC-test
+          # Repository upload token - get it from codecov.io
+          token: ${{ secrets.CODECOV_TOKEN }}
+          # Specify whether or not CI build should fail if Codecov runs into an error during upload
+          fail_ci_if_error: true
+          file: coverage.xml
+          yml: .codecov.yml
+
   deploy:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
       - name: prepare
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
           python manage.py migrate
           python manage.py data
@@ -53,7 +62,7 @@ jobs:
         uses: zxyle/publish-gae-action@v2.2
         with:
           # The service account email which will be used for authentication.
-          service_account_email:  ${{ secrets.gcp_email }}
+          service_account_email: ${{ secrets.gcp_email }}
           # The service account key which will be used for authentication.
           service_account_key: ${{ secrets.gcp_key }}
           # GAE project id
