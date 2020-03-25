@@ -36,3 +36,25 @@ jobs:
         fail_ci_if_error: true
         file: coverage.xml
         yml: .codecov.yml
+  
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: prepare
+        run: |
+          python manage.py migrate
+          python manage.py data
+          python manage.py compilemessages
+          python manage.py createcachetable
+          python manage.py collectstatic
+      - name: Publish app to Google App Engine
+        uses: zxyle/publish-gae-action@v2.2
+        with:
+          # The service account email which will be used for authentication.
+          service_account_email:  ${{ secrets.gcp_email }}
+          # The service account key which will be used for authentication.
+          service_account_key: ${{ secrets.gcp_key }}
+          # GAE project id
+          project_id: ${{ secrets.gcp_project_id }}
