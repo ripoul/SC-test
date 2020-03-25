@@ -61,12 +61,17 @@ jobs:
           python manage.py compilemessages
           python manage.py createcachetable
           python manage.py collectstatic
-      - name: Publish app to Google App Engine
-        uses: zxyle/publish-gae-action@v2.2
+      - name: auth gcp
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
-          # The service account email which will be used for authentication.
-          service_account_email: ${{ secrets.gcp_email }}
-          # The service account key which will be used for authentication.
-          service_account_key: ${{ secrets.gcp_key }}
-          # GAE project id
+          version: "285.0.0"
           project_id: ${{ secrets.gcp_project_id }}
+          service_account_email: ${{ secrets.gcp_email }}
+          service_account_key: ${{ secrets.gcp_key }}
+          export_default_credentials: true
+      - name: Publish app to Google App Engine
+        run: |
+          # This client-secret.json is converted by GCP_SA_KEY.
+          gcloud auth activate-service-account ${{ secrets.gcp_email }} --key-file=client-secret.json
+          gcloud config set project ${{ secrets.gcp_project_id }}
+          gcloud -q app deploy app.yaml --promote
