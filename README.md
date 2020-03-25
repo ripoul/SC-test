@@ -39,6 +39,13 @@ docker build -t sc-test .
 docker run -p 8888:8888 sc-test
 ```
 
+## Docker
+
+```
+docker build -t sc-test .
+docker run -p 8888:8888 sc-test
+```
+
 ## requierements par niveau
 Voici le contenu des fichiers requirements.txt par niveau, en récapitulatif.
 
