@@ -25,7 +25,9 @@ $(document).ready(function () {
         });
     });
 
-    let socket = new WebSocket("ws://localhost:8888/ws");
+    let socketURL = (window.location.protocol).contains('https') ? "wss://" : "ws://";
+    socketURL.concat(window.location.host + "/ws")
+    let socket = new WebSocket(socketURL);
 
     socket.onopen = function (e) {
     };

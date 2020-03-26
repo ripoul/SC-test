@@ -296,8 +296,8 @@ def delete_reservation(request):
     return HttpResponse(status=204)
 
 
-async def send_msg(msg):
-    async with websockets.connect("ws://localhost:8888/ws") as websocket:
+async def send_msg(msg, socketURL):
+    async with websockets.connect(socketURL) as websocket:
         try:
             await websocket.send(msg)
         except Exception as e:
@@ -339,7 +339,13 @@ def reservation_add(request):
 
     msg = serializers.serialize("json", [reservation,], use_natural_foreign_keys=True)
 
+    if "https" in request.META["wsgi.url_scheme"]:
+        socketURL = "wss://"
+    else:
+        socketURL = "ws://"
+    socketURL = f"{socketURL}{request.META['HTTP_HOST']}/ws"
+
     loop = asyncio.get_event_loop()
-    task_obj = loop.create_task(send_msg(msg))
+    task_obj = loop.create_task(send_msg(msg, socketURL))
 
     return JsonResponse(msg, safe=False,)
