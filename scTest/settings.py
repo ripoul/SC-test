@@ -34,7 +34,7 @@ ALLOWED_HOSTS = [
     ".sc-jlb-test.appspot.com",
     "sc-jlb-test.appspot.com",
     ".ripoul.fr",
-    "locahost",
+    "localhost",
 ]
 
 
