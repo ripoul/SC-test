@@ -466,7 +466,7 @@ class bookingTests(dataForTests):
         self.assertEqual(response.status_code, 400)
 
     def test_reservation_add_admin_post_ok(self):
-        c = Client()
+        c = Client(HTTP_HOST="localhost:8888")
         c.login(username="admin", password="admin")
         input_formats = [
             "%Y-%m-%dT%H:%M",
