@@ -109,7 +109,7 @@ msgstr "Capacité"
 
 #: booking/templates/booking/admin.html:131
 msgid "Add Resource"
-msgstr "Ajouter resource"
+msgstr "Ajouter ressource"
 
 #: booking/templates/booking/base.html:49
 msgid "Home"
@@ -155,7 +155,7 @@ msgstr "Supprimer"
 
 #: booking/templates/booking/index.html:50
 msgid "Resources Available"
-msgstr "Resources Disponible"
+msgstr "Ressources Disponible"
 
 #: booking/templates/booking/index.html:56
 msgid "resource type"
