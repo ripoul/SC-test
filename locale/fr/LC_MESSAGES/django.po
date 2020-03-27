@@ -121,7 +121,7 @@ msgstr "Vue d'administration"
 
 #: booking/templates/booking/base.html:55
 msgid "Logout"
-msgstr "Déconnection"
+msgstr "Déconnexion "
 
 #: booking/templates/booking/index.html:9
 msgid "Your Reservations"
@@ -141,7 +141,7 @@ msgstr "date de fin"
 
 #: booking/templates/booking/index.html:18
 msgid "resource"
-msgstr "resource"
+msgstr "ressource"
 
 #: booking/templates/booking/index.html:34
 msgid "Reservation Over"
@@ -151,7 +151,7 @@ msgstr "Réservation Passée"
 #: booking/templates/booking/index.html:121
 #: env/lib/python3.6/site-packages/django/forms/formsets.py:375
 msgid "Delete"
-msgstr "Supprimé"
+msgstr "Supprimer"
 
 #: booking/templates/booking/index.html:50
 msgid "Resources Available"
