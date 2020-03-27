@@ -102,7 +102,7 @@ SOCIAL_AUTH_GITHUB_SECRET = get_vars("SOCIAL_AUTH_GITHUB_SECRET")
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-if os.getenv("GAE_ENV", "").startswith("standard"):
+if os.getenv("GAE_INSTANCE", ""):
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
