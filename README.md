@@ -15,6 +15,8 @@ La partie front niveau 2 doit se faire si possible via la bibliothèque React (h
 Le projet doit contenir un fichier requirements.txt qui liste les dépendances Python, et doit être utilisable via un virtualenv (https://python-guide-pt-br.readthedocs.io/fr/latest/dev/virtualenvs.html).
 Enfin, le projet doit être versionné avec Git, et hébergé sur un dépôt comme GitHub, Gitlab, ou encore Bitbucket. 
 
+Cette application est déployé sur gcp app engine.
+
 # Configurations
 
 ## Installation de l'application
