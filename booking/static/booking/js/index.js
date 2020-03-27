@@ -26,7 +26,7 @@ $(document).ready(function () {
     });
 
     let socketURL = (window.location.protocol).includes('https') ? "wss://" : "ws://";
-    socketURL.concat(window.location.host + "/ws")
+    socketURL = socketURL.concat(window.location.host + "/ws");
     let socket = new WebSocket(socketURL);
 
     socket.onopen = function (e) {
