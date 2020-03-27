@@ -4,7 +4,7 @@ import os
 
 
 def get_vars(name):
-    if os.getenv("GAE_ENV", "").startswith("standard"):
+    if os.getenv("GAE_INSTANCE", ""):
         try:
             db = firestore.Client()
             doc_ref = db.collection(u"env_vars").document(u"env_prod")
