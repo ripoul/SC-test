@@ -5,9 +5,6 @@ handlers:
     secure: always
     redirect_http_response_code: 301
     script: auto
-    http_headers:
-      X-Foo-Header: foo
-      X-Bar-Header: bar value
   - url: /ws
     secure: always
     script: auto
