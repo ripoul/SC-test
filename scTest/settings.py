@@ -107,7 +107,7 @@ if os.getenv("GAE_INSTANCE", ""):
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_PROXY_SSL_HEADER = ("X-Forwarded-Proto", "https")
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
