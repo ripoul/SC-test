@@ -5,7 +5,3 @@ runtime_config:
 manual_scaling:
   instances: 1
 entrypoint: python tornado_main.py
-handlers:
-  - url: /.*
-    script: auto
-    secure: always

@@ -104,6 +104,9 @@ SOCIAL_AUTH_GITHUB_SECRET = get_vars("SOCIAL_AUTH_GITHUB_SECRET")
 
 if os.getenv("GAE_INSTANCE", ""):
     SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
