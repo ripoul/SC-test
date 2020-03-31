@@ -1,5 +1,5 @@
 FROM python:3.6.10
-RUN apt-get update && apt-get upgrade && apt-get install -y gettext libgettextpo-dev
+RUN apt-get update -y && apt-get upgrade -y && apt-get install -y gettext libgettextpo-dev
 RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt /code/
