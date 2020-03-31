@@ -40,20 +40,17 @@ class Reservation(models.Model):
     )
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def check_overlap(self, new_start, new_end):
-        if (new_start >= self.start_date and new_start <= self.end_date) or (
-            new_end >= self.start_date and new_end <= self.end_date
-        ):  # innner limits
-            return True
-        elif new_start <= self.start_date and new_end >= self.end_date:  # outter limits
-            return True
-        return False
-
     @classmethod
     def create(cls, title, start_date, end_date, resource, owner):
-        for reservation in resource.reservations.all():
-            if reservation.check_overlap(start_date, end_date):
-                raise ValidationError(_("already busy"))
+        dimension_items_overlapping_start = resource.reservations.filter(
+            start_date__gte=start_date, start_date__lte=end_date
+        ).count()
+        dimension_items_overlapping_end = resource.reservations.filter(
+            end_date__gte=start_date, end_date__lte=end_date
+        ).count()
+
+        if dimension_items_overlapping_start > 0 or dimension_items_overlapping_end > 0:
+            raise ValidationError(_("already busy"))
 
         if start_date >= end_date:
             raise ValidationError(_("start date must be before end date"))
