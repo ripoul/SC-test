@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
@@ -42,14 +43,12 @@ class Reservation(models.Model):
 
     @classmethod
     def create(cls, title, start_date, end_date, resource, owner):
-        dimension_items_overlapping_start = resource.reservations.filter(
-            start_date__gte=start_date, start_date__lte=end_date
-        ).count()
-        dimension_items_overlapping_end = resource.reservations.filter(
-            end_date__gte=start_date, end_date__lte=end_date
+        overlapping = resource.reservations.filter(
+            Q(start_date__gte=start_date, start_date__lte=end_date)
+            | Q(end_date__gte=start_date, end_date__lte=end_date)
         ).count()
 
-        if dimension_items_overlapping_start > 0 or dimension_items_overlapping_end > 0:
+        if overlapping > 0:
             raise ValidationError(_("already busy"))
 
         if start_date >= end_date:
