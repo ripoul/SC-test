@@ -41,9 +41,10 @@ class Reservation(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
     @classmethod
-    def create(cls, title, start_date, end_date, resource, owner):        
+    def create(cls, title, start_date, end_date, resource, owner):
         overlapping = resource.reservations.filter(
-            Q(start_date__gte=start_date, start_date__lte=end_date) | Q(end_date__gte=start_date, end_date__lte=end_date)
+            Q(start_date__gte=start_date, start_date__lte=end_date)
+            | Q(end_date__gte=start_date, end_date__lte=end_date)
         ).count()
 
         if overlapping > 0:
