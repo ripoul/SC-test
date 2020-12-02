@@ -87,20 +87,6 @@ def admin_view(request):
     return render(request, "booking/admin.html", context)
 
 
-def dead_code(a, b, c):
-    # this code is never use and never test
-    d = a + b
-    e = d * c
-    return d + e + a - b * c
-
-
-def more_dead_code(a, b, c):
-    # this code is never use and never test
-    d = a + b
-    e = d * c
-    return d + e + a - b * c
-
-
 @user_passes_test(lambda u: u.is_superuser)
 @login_required(login_url="/booking/login")
 def location_view(request, id_loc):
