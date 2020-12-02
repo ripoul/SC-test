@@ -1,6 +1,7 @@
 <h1 align="center">Welcome to SC-test 👋</h1>
 
 ![Python application](https://github.com/ripoul/SC-test/workflows/Python%20application/badge.svg)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/df8c558f99904865bce0de59c32e79f1)](https://app.codacy.com/gh/ripoul/SC-test?utm_source=github.com&utm_medium=referral&utm_content=ripoul/SC-test&utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/ripoul/SC-test/branch/master/graph/badge.svg)](https://codecov.io/gh/ripoul/SC-test)
 
 Le principe du test est de faire un sous-ensemble d'une plateforme de réservation de ressources, ce qui fait partie de notre quotidien.
