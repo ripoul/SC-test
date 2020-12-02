@@ -37,7 +37,7 @@ jobs:
           yml: .codecov.yml
       - name: codecov codacy
         run: |
-          bash <(curl -Ls https://coverage.codacy.com/get.sh) .coverage.xml
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Python -r coverage.xml
 
 #  deploy:
 #    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
