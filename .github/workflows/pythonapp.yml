@@ -37,6 +37,7 @@ jobs:
           yml: .codecov.yml
       - name: codecov codacy
         run: |
+          export CODACY_PROJECT_TOKEN=${{ secrets.CODACY_PROJECT_TOKEN }}
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l Python -r coverage.xml
 
 #  deploy:
