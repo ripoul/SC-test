@@ -35,40 +35,43 @@ jobs:
           fail_ci_if_error: true
           file: coverage.xml
           yml: .codecov.yml
+      - name: codecov codacy
+        run: |
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) coverage.xml
 
-  deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.8
-      - name: Install ubuntu dependencies
-        run: |
-          sudo apt-get install gettext
-      - name: Install python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: prepare
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: |
-          python manage.py compilemessages
-          python manage.py collectstatic
-      - name: auth gcp
-        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-        with:
-          version: "285.0.0"
-          project_id: ${{ secrets.gcp_project_id }}
-          service_account_email: ${{ secrets.gcp_email }}
-          service_account_key: ${{ secrets.gcp_key }}
-          export_default_credentials: true
-      - name: Publish app to Google App Engine
-        run: |
-          # This client-secret.json is converted by GCP_SA_KEY.
-          gcloud auth activate-service-account ${{ secrets.gcp_email }} --key-file=$GOOGLE_APPLICATION_CREDENTIALS
-          gcloud config set project ${{ secrets.gcp_project_id }}
-          gcloud -q app deploy app.yaml --promote
+#  deploy:
+#    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set up Python 3.8
+#        uses: actions/setup-python@v1
+#        with:
+#          python-version: 3.8
+#      - name: Install ubuntu dependencies
+#        run: |
+#          sudo apt-get install gettext
+#      - name: Install python dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          pip install -r requirements.txt
+#      - name: prepare
+#        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+#        run: |
+#          python manage.py compilemessages
+#          python manage.py collectstatic
+#      - name: auth gcp
+#        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+#        with:
+#          version: "285.0.0"
+#          project_id: ${{ secrets.gcp_project_id }}
+#          service_account_email: ${{ secrets.gcp_email }}
+#          service_account_key: ${{ secrets.gcp_key }}
+#          export_default_credentials: true
+#      - name: Publish app to Google App Engine
+#        run: |
+#          # This client-secret.json is converted by GCP_SA_KEY.
+#          gcloud auth activate-service-account ${{ secrets.gcp_email }} --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+#          gcloud config set project ${{ secrets.gcp_project_id }}
+#          gcloud -q app deploy app.yaml --promote
