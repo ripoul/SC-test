@@ -29,6 +29,10 @@ import asyncio
 import websockets
 
 
+def dead_code():
+    pass
+
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect(reverse("index"))
